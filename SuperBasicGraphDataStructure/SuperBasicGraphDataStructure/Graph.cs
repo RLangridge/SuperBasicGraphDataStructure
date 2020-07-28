@@ -2,7 +2,16 @@
 
 namespace SuperBasicGraphDataStructure
 {
-    public class Graph
+    public class Graph<NodeDataType>
     {
+        public void AddEdge()
+        {
+            
+        }
+
+        public void PrintGraph()
+        {
+            
+        }
     }
 }
