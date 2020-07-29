@@ -50,5 +50,32 @@ namespace SuperBasicGraphDataStructureUnitTests
             Assert.Throws<ArgumentNullException>(() => _testPrimitiveGraphNode.AddAdjacentNode(null));
         }
         #endregion
+        
+        #region Is Bidirectional
+
+        [Test]
+        public void GraphNode_IsBidirectional_Normal()
+        {
+            _testPrimitiveGraphNode.AddAdjacentNode(_adjacentNode);
+            _adjacentNode.AddAdjacentNode(_testPrimitiveGraphNode);
+            
+            Assert.True(_testPrimitiveGraphNode.IsBidirectional(_adjacentNode));
+            Assert.True(_adjacentNode.IsBidirectional(_testPrimitiveGraphNode));
+        }
+
+        [Test]
+        public void GraphNode_IsBidirectional_OneWayRelationship()
+        {
+            Assert.False(_testPrimitiveGraphNode.IsBidirectional(_adjacentNode));
+            Assert.False(_adjacentNode.IsBidirectional(_testPrimitiveGraphNode));
+        }
+        
+        [Test]
+        public void GraphNode_IsBidirectional_NoRelationship()
+        {
+            Assert.False(_testPrimitiveGraphNode.IsBidirectional(_adjacentNode));
+            Assert.False(_adjacentNode.IsBidirectional(_testPrimitiveGraphNode));
+        }
+        #endregion
     }
 }

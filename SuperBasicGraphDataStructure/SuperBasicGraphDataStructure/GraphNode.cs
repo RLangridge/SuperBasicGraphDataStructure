@@ -3,6 +3,10 @@ using System.Collections.Generic;
 
 namespace SuperBasicGraphDataStructure
 {
+    /// <summary>
+    /// Graph node details the node of a graph in a adjacency list format. 
+    /// </summary>
+    /// <typeparam name="NodeDataType">The data type of the object that will be stored in the node</typeparam>
     public class GraphNode<NodeDataType>
     {
         public NodeDataType Data { get; }
@@ -33,6 +37,11 @@ namespace SuperBasicGraphDataStructure
             if(AdjacentNodes.Contains(node))
                 throw new ArgumentException("Node is already adjacent to the given node.");
             AdjacentNodes.AddLast(node);
+        }
+
+        public bool IsBidirectional(GraphNode<NodeDataType> adjacentNode)
+        {
+            return AdjacentNodes.Contains(adjacentNode) && adjacentNode.AdjacentNodes.Contains(this);
         }
     }
 }
