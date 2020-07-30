@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SuperBasicGraphDataStructure
 {
@@ -60,6 +61,34 @@ namespace SuperBasicGraphDataStructure
             // If the key doesn't exist, this means that the root given doesn't have any links that it can go to.
             // This doesn't mean however that other nodes can't traverse to it
             return !_adjacencyList.ContainsKey(root) ? new LinkedList<GraphNode<NodeDataType>>() : _adjacencyList[root];
+        }
+
+        /// <summary>
+        /// Perform a breadth-first traversal on the graph given a node
+        /// </summary>
+        /// <param name="root">The node we're starting the search on</param>
+        /// <param name="actionOnData">The action we're going to perform on the data in the graph</param>
+        public void BreadthFirstTraversal(GraphNode<NodeDataType> root, Action<NodeDataType> actionOnData)
+        {
+            // If this node doesn't connect to any adjacent nodes, we can terminate early
+            if (GetAdjacentNodes(root).Count == 0)
+                return;
+            
+            var visited = new LinkedList<GraphNode<NodeDataType>>();
+            var queue = new LinkedList<GraphNode<NodeDataType>>();
+
+            queue.AddLast(root);
+
+            while (queue.Any())
+            {
+                var first = queue.First();
+                visited.AddLast(first); // So we don't revisit this node in the future
+                actionOnData?.Invoke(first.Data);
+                queue.RemoveFirst();
+
+                // For all nodes that haven't been visited, queue them up
+                GetAdjacentNodes(first).ToList().FindAll(x => !visited.Contains(x)).ForEach(x => queue.AddLast(x));
+            }
         }
 
         public void PrintGraph()
