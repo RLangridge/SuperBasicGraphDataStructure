@@ -17,15 +17,41 @@ namespace SuperBasicGraphDataStructureUnitTests
 
         #region Constructors
         [Test]
-        public void Graph_Constructor_Normal()
+        public void BasicAdjacencyGraph_Constructor_Normal()
         {
             _testBasicAdjacencyGraph = new BasicAdjacencyGraph<int>();
+        }
+        #endregion
+        #region Add Node
+
+        [Test]
+        public void BasicAdjacencyGraph_AddNode_Normal()
+        {
+            var node2 = new GraphNode<int>(1);
+            Assert.DoesNotThrow(() => _testBasicAdjacencyGraph.AddNode(node2));
+            Assert.AreEqual(1, _testBasicAdjacencyGraph.GetNumberOfNodesInGraph());
+        }
+        
+        [Test]
+        public void BasicAdjacencyGraph_AddNode_NodeAlreadyExists()
+        {
+            var node1 = new GraphNode<int>(0);
+            _testBasicAdjacencyGraph.AddNode(node1);
+            Assert.Throws<ArgumentException>(() => _testBasicAdjacencyGraph.AddNode(node1));
+            Assert.AreEqual(1, _testBasicAdjacencyGraph.GetNumberOfNodesInGraph());
+        }
+        
+        [Test]
+        public void BasicAdjacencyGraph_AddNode_NullNodeAdded()
+        {
+            Assert.Throws<ArgumentNullException>(() => _testBasicAdjacencyGraph.AddNode(null));
+            Assert.AreEqual(0, _testBasicAdjacencyGraph.GetNumberOfNodesInGraph());
         }
         #endregion
         #region Get Adjacent Nodes
 
         [Test]
-        public void Graph_GetAdjacentNodes_Normal()
+        public void BasicAdjacencyGraph_GetAdjacentNodes_Normal()
         {
             var node1 = new GraphNode<int>(0);
             var node2 = new GraphNode<int>(1);
@@ -37,7 +63,7 @@ namespace SuperBasicGraphDataStructureUnitTests
         }
         
         [Test]
-        public void Graph_GetAdjacentNodes_NoConnections()
+        public void BasicAdjacencyGraph_GetAdjacentNodes_NoConnections()
         {
             var node1 = new GraphNode<int>(0);
             var adjacentNodes = _testBasicAdjacencyGraph.GetAdjacentNodes(node1);
@@ -45,14 +71,14 @@ namespace SuperBasicGraphDataStructureUnitTests
         }
         
         [Test]
-        public void Graph_GetAdjacentNodes_NullRoot()
+        public void BasicAdjacencyGraph_GetAdjacentNodes_NullRoot()
         {
             Assert.Throws<ArgumentNullException>(() => _testBasicAdjacencyGraph.GetAdjacentNodes(null));
         }
         #endregion
         #region Add One Directional Connection
         [Test]
-        public void Graph_AddOneDirectionalEdge_Normal()
+        public void BasicAdjacencyGraph_AddOneDirectionalEdge_Normal()
         {
             var node1 = new GraphNode<int>(0);
             var node2 = new GraphNode<int>(1);
@@ -66,14 +92,14 @@ namespace SuperBasicGraphDataStructureUnitTests
         }
         
         [Test]
-        public void Graph_AddOneDirectionalEdge_NodeBeingConnectedToIsNull()
+        public void BasicAdjacencyGraph_AddOneDirectionalEdge_NodeBeingConnectedToIsNull()
         {
             var node1 = new GraphNode<int>(0);
             Assert.Throws<ArgumentNullException>(() => _testBasicAdjacencyGraph.AddOneDirectionalEdge(node1, null));
         }
         
         [Test]
-        public void Graph_AddOneDirectionalEdge_NodeBeingConnectedFromIsNull()
+        public void BasicAdjacencyGraph_AddOneDirectionalEdge_NodeBeingConnectedFromIsNull()
         {
             var node1 = new GraphNode<int>(0);
             Assert.Throws<ArgumentNullException>(() => _testBasicAdjacencyGraph.AddOneDirectionalEdge(null, node1));
@@ -81,7 +107,7 @@ namespace SuperBasicGraphDataStructureUnitTests
         #endregion
         #region Add Edge
         [Test]
-        public void Graph_AddEdge_Normal()
+        public void BasicAdjacencyGraph_AddEdge_Normal()
         {
             var node1 = new GraphNode<int>(0);
             var node2 = new GraphNode<int>(1);
@@ -98,7 +124,7 @@ namespace SuperBasicGraphDataStructureUnitTests
         #endregion
         #region Breadth First Traversal
         [Test]
-        public void Graph_BreadthFirstTraversal_Normal()
+        public void BasicAdjacencyGraph_BreadthFirstTraversal_Normal()
         {
             var node1 = new GraphNode<int>(1);
             var node2 = new GraphNode<int>(1);
@@ -116,7 +142,7 @@ namespace SuperBasicGraphDataStructureUnitTests
         }
         
         [Test]
-        public void Graph_BreadthFirstTraversal_RootNodeHasNoNeighbours()
+        public void BasicAdjacencyGraph_BreadthFirstTraversal_RootNodeHasNoNeighbours()
         {
             var node1 = new GraphNode<int>(1);
             var node2 = new GraphNode<int>(1);
@@ -134,7 +160,7 @@ namespace SuperBasicGraphDataStructureUnitTests
         }
         
         [Test]
-        public void Graph_BreadthFirstTraversal_CircularGraph()
+        public void BasicAdjacencyGraph_BreadthFirstTraversal_CircularGraph()
         {
             var node1 = new GraphNode<int>(1);
             var node2 = new GraphNode<int>(1);
@@ -154,7 +180,7 @@ namespace SuperBasicGraphDataStructureUnitTests
         #endregion
         #region Depth First Traversal
                 [Test]
-        public void Graph_DepthFirstTraversal_Normal()
+        public void BasicAdjacencyGraph_DepthFirstTraversal_Normal()
         {
             var node1 = new GraphNode<int>(1);
             var node2 = new GraphNode<int>(1);
@@ -172,7 +198,7 @@ namespace SuperBasicGraphDataStructureUnitTests
         }
         
         [Test]
-        public void Graph_DepthFirstTraversal_RootNodeHasNoNeighbours()
+        public void BasicAdjacencyGraph_DepthFirstTraversal_RootNodeHasNoNeighbours()
         {
             var node1 = new GraphNode<int>(1);
             var node2 = new GraphNode<int>(1);
@@ -190,7 +216,7 @@ namespace SuperBasicGraphDataStructureUnitTests
         }
         
         [Test]
-        public void Graph_DepthFirstTraversal_CircularGraph()
+        public void BasicAdjacencyGraph_DepthFirstTraversal_CircularGraph()
         {
             var node1 = new GraphNode<int>(1);
             var node2 = new GraphNode<int>(1);

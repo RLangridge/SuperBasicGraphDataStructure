@@ -13,6 +13,13 @@ namespace SuperBasicGraphDataStructure
         void AddEdge(GraphNode<TNodeDataType> first, GraphNode<TNodeDataType> second);
 
         /// <summary>
+        /// Adds in a node without any connections
+        /// </summary>
+        /// <param name="node">The new node to be added</param>
+        /// <exception cref="ArgumentException">Thrown if the node already exists in the graph</exception>
+        void AddNode(GraphNode<TNodeDataType> node);
+
+        /// <summary>
         /// Add a connection from one node to another. This is not bi-directional
         /// </summary>
         /// <param name="nodeBeingConnectedFrom">The node that we're connecting from</param>
@@ -43,5 +50,11 @@ namespace SuperBasicGraphDataStructure
         /// <param name="root">The node we're starting our traversal from</param>
         /// <param name="actionOnData">The action we want to run on the data in the graph</param>
         void DepthFirstTraversal(GraphNode<TNodeDataType> root, Action<TNodeDataType> actionOnData);
+
+        /// <summary>
+        /// Retrieves the number of nodes in the graph
+        /// </summary>
+        /// <returns>Returns the number of nodes in the graph</returns>
+        int GetNumberOfNodesInGraph();
     }
 }

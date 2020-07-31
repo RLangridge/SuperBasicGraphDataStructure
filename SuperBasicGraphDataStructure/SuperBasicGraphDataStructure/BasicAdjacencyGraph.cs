@@ -16,6 +16,20 @@ namespace SuperBasicGraphDataStructure
         {
             
         }
+
+        /// <summary>
+        /// Adds in a node without any connections
+        /// </summary>
+        /// <param name="node">The new node to be added</param>
+        /// <exception cref="ArgumentException">Thrown if the node already exists in the graph</exception>
+        public void AddNode(GraphNode<TNodeDataType> node)
+        {
+            if(node == null)
+                throw new ArgumentNullException(nameof(node), "A null node can't be added to this graph.");
+            if(_adjacencyList.ContainsKey(node))
+                throw new ArgumentException("The given node already exists in the graph.", nameof(node));
+            _adjacencyList.Add(node, new LinkedList<GraphNode<TNodeDataType>>());
+        }
         
         /// <summary>
         /// Add a two-directional connection between two nodes
@@ -103,6 +117,11 @@ namespace SuperBasicGraphDataStructure
                 return;
             
             DepthFirstTraversalHelper(root, new List<GraphNode<TNodeDataType>>(), actionOnData);
+        }
+
+        public int GetNumberOfNodesInGraph()
+        {
+            return _adjacencyList.Count;
         }
 
         /// <summary>
