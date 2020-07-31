@@ -7,10 +7,10 @@ namespace SuperBasicGraphDataStructure
     /// <summary>
     /// Basic implementation of a graph that uses nodes that have adjacency lists
     /// </summary>
-    /// <typeparam name="NodeDataType">Object data type stored in a node</typeparam>
-    public class Graph<NodeDataType>
+    /// <typeparam name="TNodeDataType">Object data type stored in a node</typeparam>
+    public class Graph<TNodeDataType>
     {
-        private Dictionary<GraphNode<NodeDataType>, LinkedList<GraphNode<NodeDataType>>> _adjacencyList = new Dictionary<GraphNode<NodeDataType>, LinkedList<GraphNode<NodeDataType>>>();
+        private Dictionary<GraphNode<TNodeDataType>, LinkedList<GraphNode<TNodeDataType>>> _adjacencyList = new Dictionary<GraphNode<TNodeDataType>, LinkedList<GraphNode<TNodeDataType>>>();
 
         public Graph()
         {
@@ -22,7 +22,7 @@ namespace SuperBasicGraphDataStructure
         /// </summary>
         /// <param name="first">First node to connect up</param>
         /// <param name="second">Second node to connect up</param>
-        public void AddEdge(GraphNode<NodeDataType> first, GraphNode<NodeDataType> second)
+        public void AddEdge(GraphNode<TNodeDataType> first, GraphNode<TNodeDataType> second)
         {
             AddOneDirectionalEdge(first, second);
             AddOneDirectionalEdge(second, first);
@@ -34,8 +34,8 @@ namespace SuperBasicGraphDataStructure
         /// <param name="nodeBeingConnectedFrom">The node that we're connecting from</param>
         /// <param name="nodeBeingConnectedTo">The node we're connecting to</param>
         /// <exception cref="ArgumentNullException">Thrown if either node is null</exception>
-        public void AddOneDirectionalEdge(GraphNode<NodeDataType> nodeBeingConnectedFrom,
-            GraphNode<NodeDataType> nodeBeingConnectedTo)
+        public void AddOneDirectionalEdge(GraphNode<TNodeDataType> nodeBeingConnectedFrom,
+            GraphNode<TNodeDataType> nodeBeingConnectedTo)
         {
             if(nodeBeingConnectedTo == null)
                 throw new ArgumentNullException(nameof(nodeBeingConnectedTo), "Node being connected to can't be null");
@@ -43,7 +43,7 @@ namespace SuperBasicGraphDataStructure
                 throw new ArgumentNullException(nameof(nodeBeingConnectedFrom), "Node being connected from can't be null");
             
             if(!_adjacencyList.ContainsKey(nodeBeingConnectedFrom))
-                _adjacencyList.Add(nodeBeingConnectedFrom, new LinkedList<GraphNode<NodeDataType>>());
+                _adjacencyList.Add(nodeBeingConnectedFrom, new LinkedList<GraphNode<TNodeDataType>>());
             _adjacencyList[nodeBeingConnectedFrom].AddLast(nodeBeingConnectedTo);
         }
 
@@ -54,13 +54,13 @@ namespace SuperBasicGraphDataStructure
         /// <param name="root">The node we're getting adjacent nodes for</param>
         /// <returns>A list of nodes that are adjacent to the root node</returns>
         /// <exception cref="ArgumentNullException">Thrown if root is null</exception>
-        public LinkedList<GraphNode<NodeDataType>> GetAdjacentNodes(GraphNode<NodeDataType> root)
+        public LinkedList<GraphNode<TNodeDataType>> GetAdjacentNodes(GraphNode<TNodeDataType> root)
         {
             if(root == null)
                 throw new ArgumentNullException(nameof(root), "Root for adjacency list can't be null");
             // If the key doesn't exist, this means that the root given doesn't have any links that it can go to.
             // This doesn't mean however that other nodes can't traverse to it
-            return !_adjacencyList.ContainsKey(root) ? new LinkedList<GraphNode<NodeDataType>>() : _adjacencyList[root];
+            return !_adjacencyList.ContainsKey(root) ? new LinkedList<GraphNode<TNodeDataType>>() : _adjacencyList[root];
         }
 
         /// <summary>
@@ -68,14 +68,14 @@ namespace SuperBasicGraphDataStructure
         /// </summary>
         /// <param name="root">The node we're starting the search on</param>
         /// <param name="actionOnData">The action we're going to perform on the data in the graph</param>
-        public void BreadthFirstTraversal(GraphNode<NodeDataType> root, Action<NodeDataType> actionOnData)
+        public void BreadthFirstTraversal(GraphNode<TNodeDataType> root, Action<TNodeDataType> actionOnData)
         {
             // If this node doesn't connect to any adjacent nodes, we can terminate early
             if (GetAdjacentNodes(root).Count == 0)
                 return;
             
-            var visited = new LinkedList<GraphNode<NodeDataType>>();
-            var queue = new LinkedList<GraphNode<NodeDataType>>();
+            var visited = new LinkedList<GraphNode<TNodeDataType>>();
+            var queue = new LinkedList<GraphNode<TNodeDataType>>();
 
             queue.AddLast(root);
 
@@ -96,13 +96,13 @@ namespace SuperBasicGraphDataStructure
         /// </summary>
         /// <param name="root">The node we're starting our traversal from</param>
         /// <param name="actionOnData">The action we want to run on the data in the graph</param>
-        public void DepthFirstTraversal(GraphNode<NodeDataType> root, Action<NodeDataType> actionOnData)
+        public void DepthFirstTraversal(GraphNode<TNodeDataType> root, Action<TNodeDataType> actionOnData)
         {
             // If this node doesn't connect to any adjacent nodes, we can terminate early
             if (GetAdjacentNodes(root).Count == 0)
                 return;
             
-            DepthFirstTraversalHelper(root, new List<GraphNode<NodeDataType>>(), actionOnData);
+            DepthFirstTraversalHelper(root, new List<GraphNode<TNodeDataType>>(), actionOnData);
         }
 
         /// <summary>
@@ -111,8 +111,8 @@ namespace SuperBasicGraphDataStructure
         /// <param name="root">The currently visited node</param>
         /// <param name="visitedNodes">The nodes that have been visited</param>
         /// <param name="actionOnData">The action to run on the current node</param>
-        private void DepthFirstTraversalHelper(GraphNode<NodeDataType> root, List<GraphNode<NodeDataType>> visitedNodes,
-            Action<NodeDataType> actionOnData)
+        private void DepthFirstTraversalHelper(GraphNode<TNodeDataType> root, List<GraphNode<TNodeDataType>> visitedNodes,
+            Action<TNodeDataType> actionOnData)
         {
             // Add this node to the visited node list and run the action
             visitedNodes.Add(root);

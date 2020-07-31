@@ -6,12 +6,12 @@ namespace SuperBasicGraphDataStructure
     /// <summary>
     /// Graph node details the node of a graph
     /// </summary>
-    /// <typeparam name="NodeDataType">The data type of the object that will be stored in the node</typeparam>
-    public class GraphNode<NodeDataType>
+    /// <typeparam name="TNodeDataType">The data type of the object that will be stored in the node</typeparam>
+    public class GraphNode<TNodeDataType>
     {
-        public NodeDataType Data { get; }
+        public TNodeDataType Data { get; }
 
-        public GraphNode(NodeDataType data)
+        public GraphNode(TNodeDataType data)
         {
             Data = data;
         }
