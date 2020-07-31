@@ -8,11 +8,11 @@ namespace SuperBasicGraphDataStructure
     /// Basic implementation of a graph that uses nodes that have adjacency lists
     /// </summary>
     /// <typeparam name="TNodeDataType">Object data type stored in a node</typeparam>
-    public class Graph<TNodeDataType>
+    public class BasicAdjacencyGraph<TNodeDataType> : IGraph<TNodeDataType>
     {
         private Dictionary<GraphNode<TNodeDataType>, LinkedList<GraphNode<TNodeDataType>>> _adjacencyList = new Dictionary<GraphNode<TNodeDataType>, LinkedList<GraphNode<TNodeDataType>>>();
 
-        public Graph()
+        public BasicAdjacencyGraph()
         {
             
         }
