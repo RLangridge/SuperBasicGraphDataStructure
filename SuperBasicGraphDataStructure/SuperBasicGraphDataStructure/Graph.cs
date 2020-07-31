@@ -91,6 +91,38 @@ namespace SuperBasicGraphDataStructure
             }
         }
 
+        /// <summary>
+        /// Runs a depth first traversal on the graph given a node. Will terminate if root node given doesn't have neighbours
+        /// </summary>
+        /// <param name="root">The node we're starting our traversal from</param>
+        /// <param name="actionOnData">The action we want to run on the data in the graph</param>
+        public void DepthFirstTraversal(GraphNode<NodeDataType> root, Action<NodeDataType> actionOnData)
+        {
+            // If this node doesn't connect to any adjacent nodes, we can terminate early
+            if (GetAdjacentNodes(root).Count == 0)
+                return;
+            
+            DepthFirstTraversalHelper(root, new List<GraphNode<NodeDataType>>(), actionOnData);
+        }
+
+        /// <summary>
+        /// Helper function that runs recursively to iterate through the graph
+        /// </summary>
+        /// <param name="root">The currently visited node</param>
+        /// <param name="visitedNodes">The nodes that have been visited</param>
+        /// <param name="actionOnData">The action to run on the current node</param>
+        private void DepthFirstTraversalHelper(GraphNode<NodeDataType> root, List<GraphNode<NodeDataType>> visitedNodes,
+            Action<NodeDataType> actionOnData)
+        {
+            // Add this node to the visited node list and run the action
+            visitedNodes.Add(root);
+            actionOnData?.Invoke(root.Data);
+            
+            // For each neighbour node, run this function again if the node isn't in the visited node list
+            GetAdjacentNodes(root).ToList().FindAll( x => !visitedNodes.Contains(x)).
+                ForEach(x => DepthFirstTraversalHelper(x, visitedNodes, actionOnData));
+        }
+
         public void PrintGraph()
         {
             

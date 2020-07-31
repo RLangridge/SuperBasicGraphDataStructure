@@ -152,5 +152,61 @@ namespace SuperBasicGraphDataStructureUnitTests
             Assert.AreEqual(4, counter);
         }
         #endregion
+        #region Depth First Traversal
+                [Test]
+        public void Graph_DepthFirstTraversal_Normal()
+        {
+            var node1 = new GraphNode<int>(1);
+            var node2 = new GraphNode<int>(1);
+            var node3 = new GraphNode<int>(1);
+            var node4 = new GraphNode<int>(1);
+            
+            //For this, we just have a graph that has one root node that has 3 bi-directional neighbours
+            _testGraph.AddEdge(node1, node2);
+            _testGraph.AddEdge(node1, node3);
+            _testGraph.AddEdge(node1, node4);
+
+            var counter = 0;
+            _testGraph.DepthFirstTraversal(node1, i => counter += i);
+            Assert.AreEqual(4, counter);
+        }
+        
+        [Test]
+        public void Graph_DepthFirstTraversal_RootNodeHasNoNeighbours()
+        {
+            var node1 = new GraphNode<int>(1);
+            var node2 = new GraphNode<int>(1);
+            var node3 = new GraphNode<int>(1);
+            var node4 = new GraphNode<int>(1);
+            
+            //For this, we just have a graph that has one root node that has 3 bi-directional neighbours
+            _testGraph.AddEdge(node3, node2);
+            _testGraph.AddEdge(node4, node3);
+            _testGraph.AddEdge(node2, node4);
+
+            var counter = 0;
+            _testGraph.DepthFirstTraversal(node1, i => counter += i);
+            Assert.AreEqual(0, counter);
+        }
+        
+        [Test]
+        public void Graph_DepthFirstTraversal_CircularGraph()
+        {
+            var node1 = new GraphNode<int>(1);
+            var node2 = new GraphNode<int>(1);
+            var node3 = new GraphNode<int>(1);
+            var node4 = new GraphNode<int>(1);
+            
+            //For this, we just have a graph that has one root node that has 3 bi-directional neighbours
+            _testGraph.AddOneDirectionalEdge(node1, node2);
+            _testGraph.AddOneDirectionalEdge(node2, node3);
+            _testGraph.AddOneDirectionalEdge(node3, node4);
+            _testGraph.AddOneDirectionalEdge(node4, node1);
+
+            var counter = 0;
+            _testGraph.DepthFirstTraversal(node1, i => counter += i);
+            Assert.AreEqual(4, counter);
+        }
+        #endregion
     }
 }
