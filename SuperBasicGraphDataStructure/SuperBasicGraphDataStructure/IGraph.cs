@@ -56,5 +56,22 @@ namespace SuperBasicGraphDataStructure
         /// </summary>
         /// <returns>Returns the number of nodes in the graph</returns>
         int GetNumberOfNodesInGraph();
+
+        /// <summary>
+        /// Get the minimum cost between the source node and the destination node on the graph
+        /// </summary>
+        /// <param name="src">The source node we're starting from</param>
+        /// <param name="dst">The node we want to get to</param>
+        /// <returns>The minimum cost from source node to destination node</returns>
+        int MinimumCostBetweenTwoNodes(GraphNode<TNodeDataType> src, GraphNode<TNodeDataType> dst);
+
+        /// <summary>
+        /// Get the shortest path between the source node and the destination node on the graph
+        /// </summary>
+        /// <param name="src">The source node we're starting from</param>
+        /// <param name="dst">The destination node we want to reach</param>
+        /// <returns>A list of nodes from source to destination</returns>
+        ICollection<GraphNode<TNodeDataType>> GetPathBetweenTwoNodes(GraphNode<TNodeDataType> src,
+            GraphNode<TNodeDataType> dst);
     }
 }

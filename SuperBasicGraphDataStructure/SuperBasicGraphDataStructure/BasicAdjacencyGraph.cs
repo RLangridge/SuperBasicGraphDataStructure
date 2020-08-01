@@ -124,6 +124,16 @@ namespace SuperBasicGraphDataStructure
             return _adjacencyList.Count;
         }
 
+        public int MinimumCostBetweenTwoNodes(GraphNode<TNodeDataType> src, GraphNode<TNodeDataType> dst)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ICollection<GraphNode<TNodeDataType>> GetPathBetweenTwoNodes(GraphNode<TNodeDataType> src, GraphNode<TNodeDataType> dst)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Helper function that runs recursively to iterate through the graph
         /// </summary>
