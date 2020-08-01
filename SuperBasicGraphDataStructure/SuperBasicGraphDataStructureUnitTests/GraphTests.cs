@@ -58,7 +58,7 @@ namespace SuperBasicGraphDataStructureUnitTests
             _testBasicAdjacencyGraph.AddOneDirectionalEdge(node1, node2, 0);
             var adjacentNodes = _testBasicAdjacencyGraph.GetAdjacentNodes(node1);
             Assert.AreEqual(1, adjacentNodes.Count);
-            Assert.AreEqual(node2, adjacentNodes.First.Value);
+            Assert.AreEqual(node2, adjacentNodes.First.Value.Item1);
             Assert.AreEqual(node2.Data, adjacentNodes.First.Value.Item1.Data);
         }
         
@@ -86,7 +86,8 @@ namespace SuperBasicGraphDataStructureUnitTests
             Assert.DoesNotThrow(() => _testBasicAdjacencyGraph.AddOneDirectionalEdge(node1, node2, costBetweenNodes));
             var adjacentNodes = _testBasicAdjacencyGraph.GetAdjacentNodes(node1);
             Assert.AreEqual(1, adjacentNodes.Count);
-            Assert.AreEqual(node2, adjacentNodes.First.Value);
+            Assert.AreEqual(node2, adjacentNodes.First.Value.Item1);
+            Assert.AreEqual(costBetweenNodes, adjacentNodes.First.Value.Item2);
             Assert.AreEqual(node2.Data, adjacentNodes.First.Value.Item1.Data);
             var otherDirection = _testBasicAdjacencyGraph.GetAdjacentNodes(node2);
             Assert.AreEqual(0, otherDirection.Count);
@@ -112,15 +113,19 @@ namespace SuperBasicGraphDataStructureUnitTests
         {
             var node1 = new GraphNode<int>(0);
             var node2 = new GraphNode<int>(1);
-            Assert.DoesNotThrow(() => _testBasicAdjacencyGraph.AddEdge(node1, node2, 0, 0));
+            var srcToDst = 2;
+            var dstToSrc = 3;
+            Assert.DoesNotThrow(() => _testBasicAdjacencyGraph.AddEdge(node1, node2, srcToDst, dstToSrc));
             var adjacentNodes1 = _testBasicAdjacencyGraph.GetAdjacentNodes(node1);
             Assert.AreEqual(1, adjacentNodes1.Count);
-            Assert.AreEqual(node2, adjacentNodes1.First.Value);
+            Assert.AreEqual(node2, adjacentNodes1.First.Value.Item1);
             Assert.AreEqual(node2.Data, adjacentNodes1.First.Value.Item1.Data);
+            Assert.AreEqual(srcToDst, adjacentNodes1.First.Value.Item2);
             var adjacentNodes2 = _testBasicAdjacencyGraph.GetAdjacentNodes(node2);
             Assert.AreEqual(1, adjacentNodes2.Count);
-            Assert.AreEqual(node1, adjacentNodes2.First.Value);
+            Assert.AreEqual(node1, adjacentNodes2.First.Value.Item1);
             Assert.AreEqual(node1.Data, adjacentNodes2.First.Value.Item1.Data);
+            Assert.AreEqual(dstToSrc, adjacentNodes2.First.Value.Item2);
         }
         #endregion
         #region Breadth First Traversal
