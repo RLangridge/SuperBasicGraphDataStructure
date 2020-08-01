@@ -30,35 +30,38 @@ namespace SuperBasicGraphDataStructure
                 throw new ArgumentException("The given node already exists in the graph.", nameof(node));
             _adjacencyList.Add(node, new LinkedList<GraphNode<TNodeDataType>>());
         }
-        
+
         /// <summary>
         /// Add a two-directional connection between two nodes
         /// </summary>
-        /// <param name="first">First node to connect up</param>
-        /// <param name="second">Second node to connect up</param>
-        public void AddEdge(GraphNode<TNodeDataType> first, GraphNode<TNodeDataType> second)
+        /// <param name="src"></param>
+        /// <param name="dst"></param>
+        /// <param name="srcToDstCost"></param>
+        /// <param name="dstToSrcCost"></param>
+        public void AddEdge(GraphNode<TNodeDataType> src, GraphNode<TNodeDataType> dst, int srcToDstCost,
+            int dstToSrcCost)
         {
-            AddOneDirectionalEdge(first, second);
-            AddOneDirectionalEdge(second, first);
+            AddOneDirectionalEdge(src, dst, 0);
+            AddOneDirectionalEdge(dst, src, 0);
         }
 
         /// <summary>
         /// Add a connection from one node to another. This is not bi-directional
         /// </summary>
-        /// <param name="nodeBeingConnectedFrom">The node that we're connecting from</param>
-        /// <param name="nodeBeingConnectedTo">The node we're connecting to</param>
+        /// <param name="src"></param>
+        /// <param name="dst"></param>
+        /// <param name="cost"></param>
         /// <exception cref="ArgumentNullException">Thrown if either node is null</exception>
-        public void AddOneDirectionalEdge(GraphNode<TNodeDataType> nodeBeingConnectedFrom,
-            GraphNode<TNodeDataType> nodeBeingConnectedTo)
+        public void AddOneDirectionalEdge(GraphNode<TNodeDataType> src, GraphNode<TNodeDataType> dst, int cost)
         {
-            if(nodeBeingConnectedTo == null)
-                throw new ArgumentNullException(nameof(nodeBeingConnectedTo), "Node being connected to can't be null");
-            if(nodeBeingConnectedFrom == null)
-                throw new ArgumentNullException(nameof(nodeBeingConnectedFrom), "Node being connected from can't be null");
+            if(dst == null)
+                throw new ArgumentNullException(nameof(dst), "Node being connected to can't be null");
+            if(src == null)
+                throw new ArgumentNullException(nameof(src), "Node being connected from can't be null");
             
-            if(!_adjacencyList.ContainsKey(nodeBeingConnectedFrom))
-                _adjacencyList.Add(nodeBeingConnectedFrom, new LinkedList<GraphNode<TNodeDataType>>());
-            _adjacencyList[nodeBeingConnectedFrom].AddLast(nodeBeingConnectedTo);
+            if(!_adjacencyList.ContainsKey(src))
+                _adjacencyList.Add(src, new LinkedList<GraphNode<TNodeDataType>>());
+            _adjacencyList[src].AddLast(dst);
         }
 
         /// <summary>

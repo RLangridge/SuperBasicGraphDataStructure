@@ -8,9 +8,11 @@ namespace SuperBasicGraphDataStructure
         /// <summary>
         /// Add a two-directional connection between two nodes
         /// </summary>
-        /// <param name="first">First node to connect up</param>
-        /// <param name="second">Second node to connect up</param>
-        void AddEdge(GraphNode<TNodeDataType> first, GraphNode<TNodeDataType> second);
+        /// <param name="src"></param>
+        /// <param name="dst"></param>
+        /// <param name="srcToDstCost"></param>
+        /// <param name="dstToSrcCost"></param>
+        void AddEdge(GraphNode<TNodeDataType> src, GraphNode<TNodeDataType> dst, int srcToDstCost, int dstToSrcCost);
 
         /// <summary>
         /// Adds in a node without any connections
@@ -22,11 +24,11 @@ namespace SuperBasicGraphDataStructure
         /// <summary>
         /// Add a connection from one node to another. This is not bi-directional
         /// </summary>
-        /// <param name="nodeBeingConnectedFrom">The node that we're connecting from</param>
-        /// <param name="nodeBeingConnectedTo">The node we're connecting to</param>
+        /// <param name="src">The source node to connect from</param>
+        /// <param name="dst">The destination node to connect to</param>
+        /// <param name="cost">The cost to get from source to destination</param>
         /// <exception cref="ArgumentNullException">Thrown if either node is null</exception>
-        void AddOneDirectionalEdge(GraphNode<TNodeDataType> nodeBeingConnectedFrom,
-            GraphNode<TNodeDataType> nodeBeingConnectedTo);
+        void AddOneDirectionalEdge(GraphNode<TNodeDataType> src, GraphNode<TNodeDataType> dst, int cost);
 
         /// <summary>
         /// Retrieves a list of nodes that are adjacent to the given root node

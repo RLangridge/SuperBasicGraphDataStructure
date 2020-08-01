@@ -55,7 +55,7 @@ namespace SuperBasicGraphDataStructureUnitTests
         {
             var node1 = new GraphNode<int>(0);
             var node2 = new GraphNode<int>(1);
-            _testBasicAdjacencyGraph.AddOneDirectionalEdge(node1, node2);
+            _testBasicAdjacencyGraph.AddOneDirectionalEdge(node1, node2, 0);
             var adjacentNodes = _testBasicAdjacencyGraph.GetAdjacentNodes(node1);
             Assert.AreEqual(1, adjacentNodes.Count);
             Assert.AreEqual(node2, adjacentNodes.First.Value);
@@ -82,7 +82,7 @@ namespace SuperBasicGraphDataStructureUnitTests
         {
             var node1 = new GraphNode<int>(0);
             var node2 = new GraphNode<int>(1);
-            Assert.DoesNotThrow(() => _testBasicAdjacencyGraph.AddOneDirectionalEdge(node1, node2));
+            Assert.DoesNotThrow(() => _testBasicAdjacencyGraph.AddOneDirectionalEdge(node1, node2, 0));
             var adjacentNodes = _testBasicAdjacencyGraph.GetAdjacentNodes(node1);
             Assert.AreEqual(1, adjacentNodes.Count);
             Assert.AreEqual(node2, adjacentNodes.First.Value);
@@ -95,14 +95,14 @@ namespace SuperBasicGraphDataStructureUnitTests
         public void BasicAdjacencyGraph_AddOneDirectionalEdge_NodeBeingConnectedToIsNull()
         {
             var node1 = new GraphNode<int>(0);
-            Assert.Throws<ArgumentNullException>(() => _testBasicAdjacencyGraph.AddOneDirectionalEdge(node1, null));
+            Assert.Throws<ArgumentNullException>(() => _testBasicAdjacencyGraph.AddOneDirectionalEdge(node1, null, 0));
         }
         
         [Test]
         public void BasicAdjacencyGraph_AddOneDirectionalEdge_NodeBeingConnectedFromIsNull()
         {
             var node1 = new GraphNode<int>(0);
-            Assert.Throws<ArgumentNullException>(() => _testBasicAdjacencyGraph.AddOneDirectionalEdge(null, node1));
+            Assert.Throws<ArgumentNullException>(() => _testBasicAdjacencyGraph.AddOneDirectionalEdge(null, node1, 0));
         }
         #endregion
         #region Add Edge
@@ -111,7 +111,7 @@ namespace SuperBasicGraphDataStructureUnitTests
         {
             var node1 = new GraphNode<int>(0);
             var node2 = new GraphNode<int>(1);
-            Assert.DoesNotThrow(() => _testBasicAdjacencyGraph.AddEdge(node1, node2));
+            Assert.DoesNotThrow(() => _testBasicAdjacencyGraph.AddEdge(node1, node2, 0, 0));
             var adjacentNodes1 = _testBasicAdjacencyGraph.GetAdjacentNodes(node1);
             Assert.AreEqual(1, adjacentNodes1.Count);
             Assert.AreEqual(node2, adjacentNodes1.First.Value);
@@ -132,9 +132,9 @@ namespace SuperBasicGraphDataStructureUnitTests
             var node4 = new GraphNode<int>(1);
             
             //For this, we just have a graph that has one root node that has 3 bi-directional neighbours
-            _testBasicAdjacencyGraph.AddEdge(node1, node2);
-            _testBasicAdjacencyGraph.AddEdge(node1, node3);
-            _testBasicAdjacencyGraph.AddEdge(node1, node4);
+            _testBasicAdjacencyGraph.AddEdge(node1, node2, 0, 0);
+            _testBasicAdjacencyGraph.AddEdge(node1, node3, 0, 0);
+            _testBasicAdjacencyGraph.AddEdge(node1, node4, 0, 0);
 
             var counter = 0;
             _testBasicAdjacencyGraph.BreadthFirstTraversal(node1, i => counter += i);
@@ -150,9 +150,9 @@ namespace SuperBasicGraphDataStructureUnitTests
             var node4 = new GraphNode<int>(1);
             
             //For this, we just have a graph that has one root node that has 3 bi-directional neighbours
-            _testBasicAdjacencyGraph.AddEdge(node3, node2);
-            _testBasicAdjacencyGraph.AddEdge(node4, node3);
-            _testBasicAdjacencyGraph.AddEdge(node2, node4);
+            _testBasicAdjacencyGraph.AddEdge(node3, node2, 0, 0);
+            _testBasicAdjacencyGraph.AddEdge(node4, node3, 0, 0);
+            _testBasicAdjacencyGraph.AddEdge(node2, node4, 0, 0);
 
             var counter = 0;
             _testBasicAdjacencyGraph.BreadthFirstTraversal(node1, i => counter += i);
@@ -168,10 +168,10 @@ namespace SuperBasicGraphDataStructureUnitTests
             var node4 = new GraphNode<int>(1);
             
             //For this, we just have a graph that has one root node that has 3 bi-directional neighbours
-            _testBasicAdjacencyGraph.AddOneDirectionalEdge(node1, node2);
-            _testBasicAdjacencyGraph.AddOneDirectionalEdge(node2, node3);
-            _testBasicAdjacencyGraph.AddOneDirectionalEdge(node3, node4);
-            _testBasicAdjacencyGraph.AddOneDirectionalEdge(node4, node1);
+            _testBasicAdjacencyGraph.AddOneDirectionalEdge(node1, node2, 0);
+            _testBasicAdjacencyGraph.AddOneDirectionalEdge(node2, node3, 0);
+            _testBasicAdjacencyGraph.AddOneDirectionalEdge(node3, node4, 0);
+            _testBasicAdjacencyGraph.AddOneDirectionalEdge(node4, node1, 0);
 
             var counter = 0;
             _testBasicAdjacencyGraph.BreadthFirstTraversal(node1, i => counter += i);
@@ -188,9 +188,9 @@ namespace SuperBasicGraphDataStructureUnitTests
             var node4 = new GraphNode<int>(1);
             
             //For this, we just have a graph that has one root node that has 3 bi-directional neighbours
-            _testBasicAdjacencyGraph.AddEdge(node1, node2);
-            _testBasicAdjacencyGraph.AddEdge(node1, node3);
-            _testBasicAdjacencyGraph.AddEdge(node1, node4);
+            _testBasicAdjacencyGraph.AddEdge(node1, node2, 0, 0);
+            _testBasicAdjacencyGraph.AddEdge(node1, node3, 0, 0);
+            _testBasicAdjacencyGraph.AddEdge(node1, node4, 0, 0);
 
             var counter = 0;
             _testBasicAdjacencyGraph.DepthFirstTraversal(node1, i => counter += i);
@@ -206,9 +206,9 @@ namespace SuperBasicGraphDataStructureUnitTests
             var node4 = new GraphNode<int>(1);
             
             //For this, we just have a graph that has one root node that has 3 bi-directional neighbours
-            _testBasicAdjacencyGraph.AddEdge(node3, node2);
-            _testBasicAdjacencyGraph.AddEdge(node4, node3);
-            _testBasicAdjacencyGraph.AddEdge(node2, node4);
+            _testBasicAdjacencyGraph.AddEdge(node3, node2, 0, 0);
+            _testBasicAdjacencyGraph.AddEdge(node4, node3, 0, 0);
+            _testBasicAdjacencyGraph.AddEdge(node2, node4, 0, 0);
 
             var counter = 0;
             _testBasicAdjacencyGraph.DepthFirstTraversal(node1, i => counter += i);
@@ -224,10 +224,10 @@ namespace SuperBasicGraphDataStructureUnitTests
             var node4 = new GraphNode<int>(1);
             
             //For this, we just have a graph that has one root node that has 3 bi-directional neighbours
-            _testBasicAdjacencyGraph.AddOneDirectionalEdge(node1, node2);
-            _testBasicAdjacencyGraph.AddOneDirectionalEdge(node2, node3);
-            _testBasicAdjacencyGraph.AddOneDirectionalEdge(node3, node4);
-            _testBasicAdjacencyGraph.AddOneDirectionalEdge(node4, node1);
+            _testBasicAdjacencyGraph.AddOneDirectionalEdge(node1, node2, 0);
+            _testBasicAdjacencyGraph.AddOneDirectionalEdge(node2, node3, 0);
+            _testBasicAdjacencyGraph.AddOneDirectionalEdge(node3, node4, 0);
+            _testBasicAdjacencyGraph.AddOneDirectionalEdge(node4, node1, 0);
 
             var counter = 0;
             _testBasicAdjacencyGraph.DepthFirstTraversal(node1, i => counter += i);
