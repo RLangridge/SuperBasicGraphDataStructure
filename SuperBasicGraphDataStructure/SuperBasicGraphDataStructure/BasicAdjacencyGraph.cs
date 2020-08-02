@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 
 namespace SuperBasicGraphDataStructure
@@ -8,7 +9,7 @@ namespace SuperBasicGraphDataStructure
     /// Basic implementation of a graph that uses nodes that have adjacency lists
     /// </summary>
     /// <typeparam name="TNodeDataType">Object data type stored in a node</typeparam>
-    public class BasicAdjacencyGraph<TNodeDataType, TCost> : IGraph<TNodeDataType, TCost>
+    public class BasicAdjacencyGraph<TNodeDataType, TCost> : IGraph<TNodeDataType, TCost> where TCost : IComparable
     {
         private Dictionary<GraphNode<TNodeDataType>, LinkedList<(GraphNode<TNodeDataType>, TCost)>> _adjacencyList = 
             new Dictionary<GraphNode<TNodeDataType>, LinkedList<(GraphNode<TNodeDataType>, TCost)>>();
@@ -59,7 +60,7 @@ namespace SuperBasicGraphDataStructure
                 throw new ArgumentNullException(nameof(dst), "Node being connected to can't be null");
             if(src == null)
                 throw new ArgumentNullException(nameof(src), "Node being connected from can't be null");
-            
+
             if(!_adjacencyList.ContainsKey(src))
                 _adjacencyList.Add(src, new LinkedList<(GraphNode<TNodeDataType>, TCost)>());
             _adjacencyList[src].AddLast((dst, cost));
@@ -129,9 +130,22 @@ namespace SuperBasicGraphDataStructure
             return _adjacencyList.Count;
         }
 
-        public int MinimumCostBetweenTwoNodes(GraphNode<TNodeDataType> src, GraphNode<TNodeDataType> dst)
+        public TCost MinimumCostBetweenTwoNodes(GraphNode<TNodeDataType> src, GraphNode<TNodeDataType> dst)
         {
-            throw new NotImplementedException();
+            if (src == null)
+                throw new ArgumentNullException(nameof(src), "Source node is null");
+            if(dst == null) 
+                throw new ArgumentNullException(nameof(dst), "Destination node is null");
+            
+            if(GetAdjacentNodes(src).Count == 0)
+                throw new ConstraintException($"{nameof(src)} doesn't have any neighbours. Can't calculate a distance without adjacent nodes.");
+            if(GetAdjacentNodes(dst).Count == 0)
+                throw new ConstraintException($"{nameof(dst)} doesn't have any neighbours. Can't calculate a distance without adjacent nodes.");
+            
+            if (src == dst) // Nodes are the same; can't really go anywhere
+                return default(TCost);
+
+            return default(TCost);
         }
 
         public ICollection<GraphNode<TNodeDataType>> GetPathBetweenTwoNodes(GraphNode<TNodeDataType> src, GraphNode<TNodeDataType> dst)

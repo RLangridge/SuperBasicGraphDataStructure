@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace SuperBasicGraphDataStructure
 {
-    public interface IGraph<TNodeDataType, TCost>
+    public interface IGraph<TNodeDataType, TCost> where TCost : IComparable
     {
         /// <summary>
         /// Add a two-directional connection between two nodes
@@ -65,7 +65,7 @@ namespace SuperBasicGraphDataStructure
         /// <param name="src">The source node we're starting from</param>
         /// <param name="dst">The node we want to get to</param>
         /// <returns>The minimum cost from source node to destination node</returns>
-        int MinimumCostBetweenTwoNodes(GraphNode<TNodeDataType> src, GraphNode<TNodeDataType> dst);
+        TCost MinimumCostBetweenTwoNodes(GraphNode<TNodeDataType> src, GraphNode<TNodeDataType> dst);
 
         /// <summary>
         /// Get the shortest path between the source node and the destination node on the graph
