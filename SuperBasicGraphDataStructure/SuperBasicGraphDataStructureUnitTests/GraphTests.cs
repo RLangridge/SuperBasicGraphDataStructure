@@ -7,19 +7,19 @@ namespace SuperBasicGraphDataStructureUnitTests
     [TestFixture]
     public class GraphTests
     {
-        private BasicAdjacencyGraph<int, int> _testBasicAdjacencyGraph = new BasicAdjacencyGraph<int, int>();
+        private BasicAdjacencyGraph<int> _testBasicAdjacencyGraph = new BasicAdjacencyGraph<int>();
 
         [SetUp]
         public void Setup()
         {
-            _testBasicAdjacencyGraph = new BasicAdjacencyGraph<int, int>();
+            _testBasicAdjacencyGraph = new BasicAdjacencyGraph<int>();
         }
 
         #region Constructors
         [Test]
         public void BasicAdjacencyGraph_Constructor_Normal()
         {
-            _testBasicAdjacencyGraph = new BasicAdjacencyGraph<int, int>();
+            _testBasicAdjacencyGraph = new BasicAdjacencyGraph<int>();
         }
         #endregion
         #region Add Node

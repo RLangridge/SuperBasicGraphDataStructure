@@ -9,10 +9,14 @@ namespace SuperBasicGraphDataStructure
     /// Basic implementation of a graph that uses nodes that have adjacency lists
     /// </summary>
     /// <typeparam name="TNodeDataType">Object data type stored in a node</typeparam>
-    public class BasicAdjacencyGraph<TNodeDataType, TCost> : IGraph<TNodeDataType, TCost> where TCost : IComparable
+    /// <typeparam name="TCost">The type that the cost between nodes is in the graph (Needs to inherit from IComparable)</typeparam>
+    public class BasicAdjacencyGraph<TNodeDataType> : IGraph<TNodeDataType, int>
     {
-        private Dictionary<GraphNode<TNodeDataType>, LinkedList<(GraphNode<TNodeDataType>, TCost)>> _adjacencyList = 
-            new Dictionary<GraphNode<TNodeDataType>, LinkedList<(GraphNode<TNodeDataType>, TCost)>>();
+        private Dictionary<GraphNode<TNodeDataType>, LinkedList<(GraphNode<TNodeDataType>, int)>> _adjacencyList = 
+            new Dictionary<GraphNode<TNodeDataType>, LinkedList<(GraphNode<TNodeDataType>, int)>>();
+
+        private List<DjikstraCache<TNodeDataType>> _shortedPathCache = new List<DjikstraCache<TNodeDataType>>();
+        private bool _shortestPathCacheIsDirty = true; // Used to mark that the shortest path cache needs to be recalculated
 
         public BasicAdjacencyGraph()
         {
@@ -30,7 +34,7 @@ namespace SuperBasicGraphDataStructure
                 throw new ArgumentNullException(nameof(node), "A null node can't be added to this graph.");
             if(_adjacencyList.ContainsKey(node))
                 throw new ArgumentException("The given node already exists in the graph.", nameof(node));
-            _adjacencyList.Add(node, new LinkedList<(GraphNode<TNodeDataType>, TCost)>());
+            _adjacencyList.Add(node, new LinkedList<(GraphNode<TNodeDataType>, int)>());
         }
 
         /// <summary>
@@ -40,8 +44,8 @@ namespace SuperBasicGraphDataStructure
         /// <param name="dst"></param>
         /// <param name="srcToDstCost"></param>
         /// <param name="dstToSrcCost"></param>
-        public void AddEdge(GraphNode<TNodeDataType> src, GraphNode<TNodeDataType> dst, TCost srcToDstCost,
-            TCost dstToSrcCost)
+        public void AddEdge(GraphNode<TNodeDataType> src, GraphNode<TNodeDataType> dst, int srcToDstCost,
+            int dstToSrcCost)
         {
             AddOneDirectionalEdge(src, dst, srcToDstCost);
             AddOneDirectionalEdge(dst, src, dstToSrcCost);
@@ -54,7 +58,7 @@ namespace SuperBasicGraphDataStructure
         /// <param name="dst"></param>
         /// <param name="cost"></param>
         /// <exception cref="ArgumentNullException">Thrown if either node is null</exception>
-        public void AddOneDirectionalEdge(GraphNode<TNodeDataType> src, GraphNode<TNodeDataType> dst, TCost cost)
+        public void AddOneDirectionalEdge(GraphNode<TNodeDataType> src, GraphNode<TNodeDataType> dst, int cost)
         {
             if(dst == null)
                 throw new ArgumentNullException(nameof(dst), "Node being connected to can't be null");
@@ -62,7 +66,7 @@ namespace SuperBasicGraphDataStructure
                 throw new ArgumentNullException(nameof(src), "Node being connected from can't be null");
 
             if(!_adjacencyList.ContainsKey(src))
-                _adjacencyList.Add(src, new LinkedList<(GraphNode<TNodeDataType>, TCost)>());
+                _adjacencyList.Add(src, new LinkedList<(GraphNode<TNodeDataType>, int)>());
             _adjacencyList[src].AddLast((dst, cost));
         }
 
@@ -73,13 +77,13 @@ namespace SuperBasicGraphDataStructure
         /// <param name="root">The node we're getting adjacent nodes for</param>
         /// <returns>A list of nodes that are adjacent to the root node</returns>
         /// <exception cref="ArgumentNullException">Thrown if root is null</exception>
-        public LinkedList<(GraphNode<TNodeDataType>, TCost)> GetAdjacentNodes(GraphNode<TNodeDataType> root)
+        public LinkedList<(GraphNode<TNodeDataType>, int)> GetAdjacentNodes(GraphNode<TNodeDataType> root)
         {
             if(root == null)
                 throw new ArgumentNullException(nameof(root), "Root for adjacency list can't be null");
             // If the key doesn't exist, this means that the root given doesn't have any links that it can go to.
             // This doesn't mean however that other nodes can't traverse to it
-            return !_adjacencyList.ContainsKey(root) ? new LinkedList<(GraphNode<TNodeDataType>, TCost)>() : _adjacencyList[root];
+            return !_adjacencyList.ContainsKey(root) ? new LinkedList<(GraphNode<TNodeDataType>, int)>() : _adjacencyList[root];
         }
 
         /// <summary>
@@ -130,7 +134,7 @@ namespace SuperBasicGraphDataStructure
             return _adjacencyList.Count;
         }
 
-        public TCost MinimumCostBetweenTwoNodes(GraphNode<TNodeDataType> src, GraphNode<TNodeDataType> dst)
+        public int MinimumCostBetweenTwoNodes(GraphNode<TNodeDataType> src, GraphNode<TNodeDataType> dst)
         {
             if (src == null)
                 throw new ArgumentNullException(nameof(src), "Source node is null");
@@ -143,9 +147,18 @@ namespace SuperBasicGraphDataStructure
                 throw new ConstraintException($"{nameof(dst)} doesn't have any neighbours. Can't calculate a distance without adjacent nodes.");
             
             if (src == dst) // Nodes are the same; can't really go anywhere
-                return default(TCost);
+                return 0;
+            
+            
 
-            return default(TCost);
+            var openQueue = GetAdjacentNodes(src);
+
+            var visited = new LinkedList<GraphNode<TNodeDataType>>();
+            var unvisited = _adjacencyList.Keys.ToList();
+            
+            
+            
+            return 0;
         }
 
         public ICollection<GraphNode<TNodeDataType>> GetPathBetweenTwoNodes(GraphNode<TNodeDataType> src, GraphNode<TNodeDataType> dst)
