@@ -15,7 +15,8 @@ namespace SuperBasicGraphDataStructure
         private Dictionary<GraphNode<TNodeDataType>, LinkedList<(GraphNode<TNodeDataType>, int)>> _adjacencyList = 
             new Dictionary<GraphNode<TNodeDataType>, LinkedList<(GraphNode<TNodeDataType>, int)>>();
 
-        private List<DjikstraCache<TNodeDataType>> _shortedPathCache = new List<DjikstraCache<TNodeDataType>>();
+        private Dictionary<GraphNode<TNodeDataType>, (GraphNode<TNodeDataType>, int)> _shortedPathCache =
+            new Dictionary<GraphNode<TNodeDataType>, (GraphNode<TNodeDataType>, int)>();
         private bool _shortestPathCacheIsDirty = true; // Used to mark that the shortest path cache needs to be recalculated
 
         public BasicAdjacencyGraph()
@@ -140,22 +141,17 @@ namespace SuperBasicGraphDataStructure
                 throw new ArgumentNullException(nameof(src), "Source node is null");
             if(dst == null) 
                 throw new ArgumentNullException(nameof(dst), "Destination node is null");
-            
-            if(GetAdjacentNodes(src).Count == 0)
-                throw new ConstraintException($"{nameof(src)} doesn't have any neighbours. Can't calculate a distance without adjacent nodes.");
-            if(GetAdjacentNodes(dst).Count == 0)
-                throw new ConstraintException($"{nameof(dst)} doesn't have any neighbours. Can't calculate a distance without adjacent nodes.");
-            
+
             if (src == dst) // Nodes are the same; can't really go anywhere
                 return 0;
-            
-            
 
-            var openQueue = GetAdjacentNodes(src);
-
-            var visited = new LinkedList<GraphNode<TNodeDataType>>();
-            var unvisited = _adjacencyList.Keys.ToList();
-            
+            if (_shortestPathCacheIsDirty) // We need to recalculate our graphs paths; not a process we want to repeat often
+            {
+                if(GetAdjacentNodes(src).Count == 0)
+                    throw new ConstraintException($"{nameof(src)} doesn't have any neighbours. Can't calculate a distance without adjacent nodes.");
+                if(GetAdjacentNodes(dst).Count == 0)
+                    throw new ConstraintException($"{nameof(dst)} doesn't have any neighbours. Can't calculate a distance without adjacent nodes.");
+            }
             
             
             return 0;
