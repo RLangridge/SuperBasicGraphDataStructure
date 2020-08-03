@@ -32,6 +32,18 @@ namespace SuperBasicGraphDataStructure
             }
         }
 
+        public void Add(TItem newItem, Func<TItem, TItem, int> comparerFunc)
+        {
+            if(_itemSet.Count == 0) // If this is the case, we can just add it normally
+                _itemSet.Add(newItem);
+            else
+            {
+                // While the comparison yields -1, continue it. Once it's done, we can insert the item at the counter position
+                var counter = _itemSet.TakeWhile(item => comparerFunc(item, newItem) == -1).Count();
+                _itemSet.Insert(counter, newItem);
+            }
+        }
+
         /// <summary>
         /// Remove an item from the list
         /// </summary>

@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using NUnit.Framework;
 using SuperBasicGraphDataStructure;
@@ -19,6 +18,13 @@ namespace SuperBasicGraphDataStructureUnitTests
                     return -1;
                 return x > y ? 1 : 0;
             }
+        }
+
+        private int CompareInt(int x, int y)
+        {
+            if (x < y)
+                return -1;
+            return x > y ? 1 : 0;
         }
 
         [SetUp]
@@ -80,6 +86,62 @@ namespace SuperBasicGraphDataStructureUnitTests
             _newPriorityQueue.Add(a, comparer);
             _newPriorityQueue.Add(c, comparer);
             _newPriorityQueue.Add(b, comparer);
+            Assert.AreEqual(3, _newPriorityQueue.Count);
+            Assert.AreEqual(1, _newPriorityQueue.First());
+            Assert.AreEqual(3, _newPriorityQueue.Last());
+        }
+
+        [Test]
+        public void PriorityQueue_Add2_Normal()
+        {
+            var p = 4;
+            var comparer = new SortInt();
+            Assert.DoesNotThrow(() => _newPriorityQueue.Add(p, CompareInt));
+            Assert.AreEqual(1, _newPriorityQueue.Count);
+            Assert.AreEqual(4, _newPriorityQueue.First());
+            Assert.AreEqual(4, _newPriorityQueue.Last());
+        }
+        
+        [Test]
+        public void PriorityQueue_Add2_RisingValues()
+        {
+            var a = 1;
+            var b = 2; 
+            var c = 3;
+            var comparer = new SortInt();
+            _newPriorityQueue.Add(c, CompareInt);
+            _newPriorityQueue.Add(b, CompareInt);
+            _newPriorityQueue.Add(a, CompareInt);
+            Assert.AreEqual(3, _newPriorityQueue.Count);
+            Assert.AreEqual(1, _newPriorityQueue.First());
+            Assert.AreEqual(3, _newPriorityQueue.Last());
+        }
+        
+        [Test]
+        public void PriorityQueue_Add2_Falling()
+        {
+            var a = 1;
+            var b = 2; 
+            var c = 3;
+            var comparer = new SortInt();
+            _newPriorityQueue.Add(a, CompareInt);
+            _newPriorityQueue.Add(b, CompareInt);
+            _newPriorityQueue.Add(c, CompareInt);
+            Assert.AreEqual(3, _newPriorityQueue.Count);
+            Assert.AreEqual(1, _newPriorityQueue.First());
+            Assert.AreEqual(3, _newPriorityQueue.Last());
+        }
+        
+        [Test]
+        public void PriorityQueue_Add2_MixedValues()
+        {
+            var a = 1;
+            var b = 2; 
+            var c = 3;
+            var comparer = new SortInt();
+            _newPriorityQueue.Add(a, CompareInt);
+            _newPriorityQueue.Add(c, CompareInt);
+            _newPriorityQueue.Add(b, CompareInt);
             Assert.AreEqual(3, _newPriorityQueue.Count);
             Assert.AreEqual(1, _newPriorityQueue.First());
             Assert.AreEqual(3, _newPriorityQueue.Last());
