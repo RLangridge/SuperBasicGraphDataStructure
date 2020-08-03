@@ -174,7 +174,6 @@ namespace SuperBasicGraphDataStructure
             // Add this node to the visited node list and run the action
             visitedNodes.Add(root);
             actionOnData?.Invoke(root.Data);
-            
             // For each neighbour node, run this function again if the node isn't in the visited node list
             GetAdjacentNodes(root).ToList().FindAll( x => !visitedNodes.Contains(x.Item1)).
                 ForEach(x => DepthFirstTraversalHelper(x.Item1, visitedNodes, actionOnData));
