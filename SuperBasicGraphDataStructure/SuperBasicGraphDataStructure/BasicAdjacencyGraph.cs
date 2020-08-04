@@ -151,9 +151,57 @@ namespace SuperBasicGraphDataStructure
                     throw new ConstraintException($"{nameof(src)} doesn't have any neighbours. Can't calculate a distance without adjacent nodes.");
                 if(GetAdjacentNodes(dst).Count == 0)
                     throw new ConstraintException($"{nameof(dst)} doesn't have any neighbours. Can't calculate a distance without adjacent nodes.");
+
+                var visitedNodes = new List<GraphNode<TNodeDataType>>();
+                var unvisitedNodes = _adjacencyList.Keys.ToList().Select(x => (x, x == src ? 0 : int.MaxValue)).ToList();
+                
+                // Push the nodes into the shortest path cache
+                _shortedPathCache.Clear();
+                unvisitedNodes.ForEach(x => _shortedPathCache.Add(x.x, (null, x.Item2)));
+                
+                var unvisitedNodesPriority = new PriorityQueue<(GraphNode<TNodeDataType>, int)>();
+                // Add our nodes into a priority queue, based off of how close they are to our source node
+                unvisitedNodesPriority.AddRange(unvisitedNodes, CompareGraphNodeDistances);
+
+                while (unvisitedNodesPriority.Count > 0)
+                {
+                    var currentNode = unvisitedNodesPriority.PopFirst();
+                    
+                    // Get neighbours that haven't already been visited
+                    var viableNeighbours = GetAdjacentNodes(currentNode.Item1).ToList()
+                        .Where(x => !visitedNodes.Contains(x.Item1)).ToList();
+                    
+                    if (viableNeighbours.Count == 0)
+                        continue;
+                    
+                    visitedNodes.Add(currentNode.Item1);
+
+                    foreach (var (graphNode, cost) in viableNeighbours)
+                    {
+                        var currentCost = GetPreviousVertexCost(currentNode) + cost;
+                        _shortedPathCache[graphNode] = (currentNode.Item1, currentCost);
+                        unvisitedNodesPriority.FindAndReplace((graphNode, cost), (graphNode, currentCost), ((tuple, valueTuple) => tuple.Item1 == valueTuple.Item1 ? 0 : -1));
+                    }
+                }
             }
-            
-            
+
+            return GetPreviousVertexCost(_shortedPathCache[dst]);
+        }
+
+        private int GetPreviousVertexCost((GraphNode<TNodeDataType>, int) src)
+        {
+            if (_shortedPathCache[src.Item1].Item1 == null)
+                return 0;
+            return src.Item2 + GetPreviousVertexCost(_shortedPathCache[src.Item1]);
+        }
+
+        private int CompareGraphNodeDistances((GraphNode<TNodeDataType>, int) nodeA,
+            (GraphNode<TNodeDataType>, int) nodeB)
+        {
+            if (nodeA.Item2 < nodeB.Item2)
+                return -1;
+            if (nodeA.Item2 > nodeB.Item2)
+                return 1;
             return 0;
         }
 

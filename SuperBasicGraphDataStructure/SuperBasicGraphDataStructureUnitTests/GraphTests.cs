@@ -240,5 +240,28 @@ namespace SuperBasicGraphDataStructureUnitTests
             Assert.AreEqual(4, counter);
         }
         #endregion
+        #region Minimum Cost Between Two Nodes
+        [Test]
+        public void BasicAdjacencyGraph_MinimumCostBetweenTwoNodes_Normal()
+        {
+            var a = new GraphNode<string>("A");
+            var b = new GraphNode<string>("B");
+            var c = new GraphNode<string>("C");
+            var d = new GraphNode<string>("D");
+            var e = new GraphNode<string>("E");
+            
+            var _stringGraph = new BasicAdjacencyGraph<string>();
+            
+            _stringGraph.AddEdge(a, b, 6, 6);
+            _stringGraph.AddEdge(a, d, 1, 1);
+            _stringGraph.AddEdge(b, d, 2, 2);
+            _stringGraph.AddEdge(b, e, 2, 2);
+            _stringGraph.AddEdge(b, c, 5, 5);
+            _stringGraph.AddEdge(c, e, 5, 5);
+            _stringGraph.AddEdge(d, e, 1, 1);
+            
+            Assert.AreEqual(6, _stringGraph.MinimumCostBetweenTwoNodes(a, b));
+        }
+        #endregion
     }
 }

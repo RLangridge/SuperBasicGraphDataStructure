@@ -116,6 +116,40 @@ namespace SuperBasicGraphDataStructure
         }
 
         /// <summary>
+        /// Finds the item in the priority queue and replaces it. It does this by removing the old item and adding
+        /// the new one via the add function.
+        /// </summary>
+        /// <param name="itemToFind">The item we want to replace</param>
+        /// <param name="newItem">The item we're replacing with</param>
+        /// <param name="compareFunc">The comparison function for sorting</param>
+        /// <exception cref="ArgumentException">Thrown if a match isn't found</exception>
+        public void FindAndReplace(TItem itemToFind, TItem newItem, IComparer<TItem> compareFunc)
+        {
+            var item = _itemSet.Exists(x => compareFunc.Compare(x, itemToFind) == 0);
+            if(!item)
+                throw new ArgumentException("Couldn't find item that was being searched in priority queue.", nameof(itemToFind));
+            Remove(itemToFind);
+            Add(newItem, compareFunc);
+        }
+        
+        /// <summary>
+        /// Finds the item in the priority queue and replaces it. It does this by removing the old item and adding
+        /// the new one via the add function.
+        /// </summary>
+        /// <param name="itemToFind">The item we want to replace</param>
+        /// <param name="newItem">The item we're replacing with</param>
+        /// <param name="compareFunc">The comparison function for sorting</param>
+        /// <exception cref="ArgumentException">Thrown if a match isn't found</exception>
+        public void FindAndReplace(TItem itemToFind, TItem newItem, Func<TItem, TItem, int> compareFunc)
+        {
+            var item = _itemSet.Exists(x => compareFunc(x, itemToFind) == 0);
+            if(!item)
+                throw new ArgumentException("Couldn't find item that was being searched in priority queue.", nameof(itemToFind));
+            Remove(itemToFind);
+            Add(newItem, compareFunc);
+        }
+
+        /// <summary>
         /// Copies over the data from this list to the given array at a specific index
         /// </summary>
         /// <param name="array">The array we want to copy to</param>
