@@ -32,6 +32,11 @@ namespace SuperBasicGraphDataStructure
             }
         }
 
+        /// <summary>
+        /// Add objects in order
+        /// </summary>
+        /// <param name="newItem">The item being added</param>
+        /// <param name="comparerFunc">The comparison function being run when adding items (used for sorting)</param>
         public void Add(TItem newItem, Func<TItem, TItem, int> comparerFunc)
         {
             if(_itemSet.Count == 0) // If this is the case, we can just add it normally
@@ -42,6 +47,28 @@ namespace SuperBasicGraphDataStructure
                 var counter = _itemSet.TakeWhile(item => comparerFunc(item, newItem) == -1).Count();
                 _itemSet.Insert(counter, newItem);
             }
+        }
+
+        /// <summary>
+        /// Adds an array of objects into the priority queue
+        /// </summary>
+        /// <param name="newItems">The new items that are being added</param>
+        /// <param name="comparerFunc">The comparison function being run when adding items (used for sorting)</param>
+        public void AddRange(IEnumerable<TItem> newItems, IComparer<TItem> comparerFunc)
+        {
+            foreach (var newItem in newItems)
+                Add(newItem, comparerFunc);
+        }
+        
+        /// <summary>
+        /// Adds an array of objects into the priority queue
+        /// </summary>
+        /// <param name="newItems">The new items that are being added</param>
+        /// <param name="comparerFunc">The comparison function being run when adding items (used for sorting)</param>
+        public void AddRange(IEnumerable<TItem> newItems, Func<TItem, TItem, int> comparerFunc)
+        {
+            foreach (var newItem in newItems)
+                Add(newItem, comparerFunc);
         }
 
         /// <summary>
