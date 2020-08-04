@@ -203,7 +203,7 @@ namespace SuperBasicGraphDataStructureUnitTests
             _newPriorityQueue.Add(c, comparer);
             _newPriorityQueue.Add(b, comparer);
             _newPriorityQueue.Add(a, comparer);
-            _newPriorityQueue.FindAndReplace(1, 55, comparer);
+            _newPriorityQueue.FindAndReplace(1, 55, comparer, comparer);
             Assert.AreEqual(3, _newPriorityQueue.Count);
             Assert.AreEqual(2, _newPriorityQueue.First());
             Assert.AreEqual(55, _newPriorityQueue.Last());
@@ -219,7 +219,7 @@ namespace SuperBasicGraphDataStructureUnitTests
             _newPriorityQueue.Add(c, comparer);
             _newPriorityQueue.Add(b, comparer);
             _newPriorityQueue.Add(a, comparer);
-            Assert.Throws<ArgumentException>(() => _newPriorityQueue.FindAndReplace(77, 55, comparer));
+            Assert.Throws<ArgumentException>(() => _newPriorityQueue.FindAndReplace(77, 55, comparer, comparer));
             Assert.AreEqual(3, _newPriorityQueue.Count);
             Assert.AreEqual(1, _newPriorityQueue.First());
             Assert.AreEqual(3, _newPriorityQueue.Last());
@@ -235,7 +235,7 @@ namespace SuperBasicGraphDataStructureUnitTests
             _newPriorityQueue.Add(c, comparer);
             _newPriorityQueue.Add(b, comparer);
             _newPriorityQueue.Add(a, comparer);
-            _newPriorityQueue.FindAndReplace(1, 55, (i, i1) => i == i1 ? 0 : -1);
+            _newPriorityQueue.FindAndReplace(1, 55, (i, i1) => i == i1 ? 0 : -1, CompareInt);
             Assert.AreEqual(3, _newPriorityQueue.Count);
             Assert.AreEqual(2, _newPriorityQueue.First());
             Assert.AreEqual(55, _newPriorityQueue.Last());
@@ -251,7 +251,7 @@ namespace SuperBasicGraphDataStructureUnitTests
             _newPriorityQueue.Add(c, comparer);
             _newPriorityQueue.Add(b, comparer);
             _newPriorityQueue.Add(a, comparer);
-            Assert.Throws<ArgumentException>(() => _newPriorityQueue.FindAndReplace(77, 55, (i, i1) => i == i1 ? 0 : -1));
+            Assert.Throws<ArgumentException>(() => _newPriorityQueue.FindAndReplace(77, 55, (i, i1) => i == i1 ? 0 : -1, CompareInt));
             Assert.AreEqual(3, _newPriorityQueue.Count);
             Assert.AreEqual(1, _newPriorityQueue.First());
             Assert.AreEqual(3, _newPriorityQueue.Last());

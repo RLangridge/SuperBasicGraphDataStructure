@@ -121,32 +121,34 @@ namespace SuperBasicGraphDataStructure
         /// </summary>
         /// <param name="itemToFind">The item we want to replace</param>
         /// <param name="newItem">The item we're replacing with</param>
-        /// <param name="compareFunc">The comparison function for sorting</param>
+        /// <param name="finderFunction">The comparison function for finding an element in the list</param>
+        /// <param name="comparisonFunction">The comparison function for sorting the list</param>
         /// <exception cref="ArgumentException">Thrown if a match isn't found</exception>
-        public void FindAndReplace(TItem itemToFind, TItem newItem, IComparer<TItem> compareFunc)
+        public void FindAndReplace(TItem itemToFind, TItem newItem, IComparer<TItem> finderFunction, IComparer<TItem> comparisonFunction)
         {
-            var item = _itemSet.Exists(x => compareFunc.Compare(x, itemToFind) == 0);
-            if(!item)
+            var findIndex = _itemSet.FindIndex(x => finderFunction.Compare(x, itemToFind) == 0);
+            if(findIndex == -1)
                 throw new ArgumentException("Couldn't find item that was being searched in priority queue.", nameof(itemToFind));
-            Remove(itemToFind);
-            Add(newItem, compareFunc);
+            _itemSet.RemoveAt(findIndex);
+            Add(newItem, comparisonFunction);
         }
-        
+
         /// <summary>
         /// Finds the item in the priority queue and replaces it. It does this by removing the old item and adding
         /// the new one via the add function.
         /// </summary>
         /// <param name="itemToFind">The item we want to replace</param>
         /// <param name="newItem">The item we're replacing with</param>
-        /// <param name="compareFunc">The comparison function for sorting</param>
+        /// <param name="finderFunction">The comparison function for finding an element in the list</param>
+        /// <param name="comparisonFunction">The comparison function for sorting the list</param>
         /// <exception cref="ArgumentException">Thrown if a match isn't found</exception>
-        public void FindAndReplace(TItem itemToFind, TItem newItem, Func<TItem, TItem, int> compareFunc)
+        public void FindAndReplace(TItem itemToFind, TItem newItem, Func<TItem, TItem, int> finderFunction, Func<TItem, TItem, int> comparisonFunction)
         {
-            var item = _itemSet.Exists(x => compareFunc(x, itemToFind) == 0);
-            if(!item)
+            var findIndex = _itemSet.FindIndex(x => finderFunction(x, itemToFind) == 0);
+            if(findIndex == -1)
                 throw new ArgumentException("Couldn't find item that was being searched in priority queue.", nameof(itemToFind));
-            Remove(itemToFind);
-            Add(newItem, compareFunc);
+            _itemSet.RemoveAt(findIndex);
+            Add(newItem, comparisonFunction);
         }
 
         /// <summary>

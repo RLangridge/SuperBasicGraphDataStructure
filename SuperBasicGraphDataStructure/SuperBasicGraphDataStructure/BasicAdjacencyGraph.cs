@@ -15,7 +15,7 @@ namespace SuperBasicGraphDataStructure
         private Dictionary<GraphNode<TNodeDataType>, LinkedList<(GraphNode<TNodeDataType>, int)>> _adjacencyList = 
             new Dictionary<GraphNode<TNodeDataType>, LinkedList<(GraphNode<TNodeDataType>, int)>>();
 
-        private Dictionary<GraphNode<TNodeDataType>, (GraphNode<TNodeDataType>, int)> _shortedPathCache =
+        private Dictionary<GraphNode<TNodeDataType>, (GraphNode<TNodeDataType>, int)> _shotestPathCache =
             new Dictionary<GraphNode<TNodeDataType>, (GraphNode<TNodeDataType>, int)>();
         private bool _shortestPathCacheIsDirty = true; // Used to mark that the shortest path cache needs to be recalculated
 
@@ -156,8 +156,8 @@ namespace SuperBasicGraphDataStructure
                 var unvisitedNodes = _adjacencyList.Keys.ToList().Select(x => (x, x == src ? 0 : int.MaxValue)).ToList();
                 
                 // Push the nodes into the shortest path cache
-                _shortedPathCache.Clear();
-                unvisitedNodes.ForEach(x => _shortedPathCache.Add(x.x, (null, x.Item2)));
+                _shotestPathCache.Clear();
+                unvisitedNodes.ForEach(x => _shotestPathCache.Add(x.x, (null, x.Item2)));
                 
                 var unvisitedNodesPriority = new PriorityQueue<(GraphNode<TNodeDataType>, int)>();
                 // Add our nodes into a priority queue, based off of how close they are to our source node
@@ -179,20 +179,26 @@ namespace SuperBasicGraphDataStructure
                     foreach (var (graphNode, cost) in viableNeighbours)
                     {
                         var currentCost = GetPreviousVertexCost(currentNode) + cost;
-                        _shortedPathCache[graphNode] = (currentNode.Item1, currentCost);
-                        unvisitedNodesPriority.FindAndReplace((graphNode, cost), (graphNode, currentCost), ((tuple, valueTuple) => tuple.Item1 == valueTuple.Item1 ? 0 : -1));
+                        if(_shotestPathCache[graphNode].Item2 > currentCost)
+                            _shotestPathCache[graphNode] = (currentNode.Item1, currentCost);
+                        
+                        unvisitedNodesPriority.FindAndReplace((graphNode, cost), (graphNode, currentCost), 
+                            (tuple, valueTuple) => tuple.Item1 == valueTuple.Item1 ? 0 : -1,
+                            CompareGraphNodeDistances);
                     }
                 }
+
+                _shortestPathCacheIsDirty = false;
             }
 
-            return GetPreviousVertexCost(_shortedPathCache[dst]);
+            return GetPreviousVertexCost(_shotestPathCache[dst]);
         }
 
         private int GetPreviousVertexCost((GraphNode<TNodeDataType>, int) src)
         {
-            if (_shortedPathCache[src.Item1].Item1 == null)
+            if (_shotestPathCache[src.Item1].Item1 == null)
                 return 0;
-            return src.Item2 + GetPreviousVertexCost(_shortedPathCache[src.Item1]);
+            return src.Item2 + GetPreviousVertexCost(_shotestPathCache[src.Item1]);
         }
 
         private int CompareGraphNodeDistances((GraphNode<TNodeDataType>, int) nodeA,

@@ -260,7 +260,9 @@ namespace SuperBasicGraphDataStructureUnitTests
             _stringGraph.AddEdge(c, e, 5, 5);
             _stringGraph.AddEdge(d, e, 1, 1);
             
-            Assert.AreEqual(6, _stringGraph.MinimumCostBetweenTwoNodes(a, b));
+            Assert.AreEqual(3, _stringGraph.MinimumCostBetweenTwoNodes(a, b));
+            Assert.AreEqual(1, _stringGraph.MinimumCostBetweenTwoNodes(a, d));
+            Assert.AreEqual(7, _stringGraph.MinimumCostBetweenTwoNodes(a, c));
         }
         #endregion
     }
