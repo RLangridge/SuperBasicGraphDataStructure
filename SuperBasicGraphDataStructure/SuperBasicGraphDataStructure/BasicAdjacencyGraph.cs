@@ -171,14 +171,18 @@ namespace SuperBasicGraphDataStructure
                     var viableNeighbours = GetAdjacentNodes(currentNode.Item1).ToList()
                         .Where(x => !visitedNodes.Contains(x.Item1)).ToList();
                     
+                    // If we don't have any viable neighbours, ignore this run
                     if (viableNeighbours.Count == 0)
                         continue;
                     
+                    // Add the current node to the nodes we've visited
                     visitedNodes.Add(currentNode.Item1);
 
+                    // For each viable neighbour, we need to work out the cost to our source node and sort our priority 
+                    // queue based on that
                     foreach (var (graphNode, cost) in viableNeighbours)
                     {
-                        var currentCost = GetPreviousVertexCost(currentNode) + cost;
+                        var currentCost = currentNode.Item2 + cost;
                         if(_shotestPathCache[graphNode].Item2 > currentCost)
                             _shotestPathCache[graphNode] = (currentNode.Item1, currentCost);
                         
@@ -191,14 +195,7 @@ namespace SuperBasicGraphDataStructure
                 _shortestPathCacheIsDirty = false;
             }
 
-            return GetPreviousVertexCost(_shotestPathCache[dst]);
-        }
-
-        private int GetPreviousVertexCost((GraphNode<TNodeDataType>, int) src)
-        {
-            if (_shotestPathCache[src.Item1].Item1 == null)
-                return 0;
-            return src.Item2 + GetPreviousVertexCost(_shotestPathCache[src.Item1]);
+            return _shotestPathCache[dst].Item2;
         }
 
         private int CompareGraphNodeDistances((GraphNode<TNodeDataType>, int) nodeA,
