@@ -7,6 +7,8 @@ namespace SuperBasicGraphDataStructure
     /// djikstra's algorithm
     /// </summary>
     /// <typeparam name="TNodeDataType">The type of data stored in the node</typeparam>
+    
+    [Obsolete("Didn't end up being used")]
     public class DjikstraCache<TNodeDataType>
     {
         public GraphNode<TNodeDataType> Vertex { get; }
