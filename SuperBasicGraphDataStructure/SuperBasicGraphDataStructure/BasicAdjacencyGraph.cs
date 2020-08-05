@@ -17,7 +17,7 @@ namespace SuperBasicGraphDataStructure
 
         private Dictionary<GraphNode<TNodeDataType>, (GraphNode<TNodeDataType>, int)> _shotestPathCache =
             new Dictionary<GraphNode<TNodeDataType>, (GraphNode<TNodeDataType>, int)>();
-        private bool _shortestPathCacheIsDirty = true; // Used to mark that the shortest path cache needs to be recalculated
+        private GraphNode<TNodeDataType> _shortestPathCacheNode = null; // Used to mark that the shortest path cache needs to be recalculated
 
         public BasicAdjacencyGraph()
         {
@@ -145,7 +145,7 @@ namespace SuperBasicGraphDataStructure
             if (src == dst) // Nodes are the same; can't really go anywhere
                 return 0;
 
-            if (_shortestPathCacheIsDirty) // We need to recalculate our graphs paths; not a process we want to repeat often
+            if (_shortestPathCacheNode != src) // We need to recalculate our graphs paths; not a process we want to repeat often
             {
                 if(GetAdjacentNodes(src).Count == 0)
                     throw new ConstraintException($"{nameof(src)} doesn't have any neighbours. Can't calculate a distance without adjacent nodes.");
@@ -192,7 +192,7 @@ namespace SuperBasicGraphDataStructure
                     }
                 }
 
-                _shortestPathCacheIsDirty = false;
+                _shortestPathCacheNode = src;
             }
 
             return _shotestPathCache[dst].Item2;

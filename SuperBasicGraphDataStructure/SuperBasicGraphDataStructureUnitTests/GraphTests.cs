@@ -264,6 +264,29 @@ namespace SuperBasicGraphDataStructureUnitTests
             Assert.AreEqual(1, _stringGraph.MinimumCostBetweenTwoNodes(a, d));
             Assert.AreEqual(7, _stringGraph.MinimumCostBetweenTwoNodes(a, c));
         }
+        
+        [Test]
+        public void BasicAdjacencyGraph_MinimumCostBetweenTwoNodes_SecondSearch()
+        {
+            var a = new GraphNode<string>("A");
+            var b = new GraphNode<string>("B");
+            var c = new GraphNode<string>("C");
+            var d = new GraphNode<string>("D");
+            var e = new GraphNode<string>("E");
+            
+            var _stringGraph = new BasicAdjacencyGraph<string>();
+            
+            _stringGraph.AddEdge(a, b, 6, 6);
+            _stringGraph.AddEdge(a, d, 1, 1);
+            _stringGraph.AddEdge(b, d, 2, 2);
+            _stringGraph.AddEdge(b, e, 2, 2);
+            _stringGraph.AddEdge(b, c, 5, 5);
+            _stringGraph.AddEdge(c, e, 5, 5);
+            _stringGraph.AddEdge(d, e, 1, 1);
+
+            _stringGraph.MinimumCostBetweenTwoNodes(a, b); // First search which builds the cache around A
+            Assert.AreEqual(1, _stringGraph.MinimumCostBetweenTwoNodes(d, e));
+        }
         #endregion
     }
 }
