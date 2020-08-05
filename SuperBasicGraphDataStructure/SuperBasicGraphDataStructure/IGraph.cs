@@ -44,14 +44,14 @@ namespace SuperBasicGraphDataStructure
         /// </summary>
         /// <param name="root">The node we're starting the search on</param>
         /// <param name="actionOnData">The action we're going to perform on the data in the graph</param>
-        void BreadthFirstTraversal(GraphNode<TNodeDataType> root, Action<TNodeDataType> actionOnData);
+        void BreadthFirstTraversal(GraphNode<TNodeDataType> root, Action<GraphNode<TNodeDataType>> actionOnData);
 
         /// <summary>
         /// Runs a depth first traversal on the graph given a node. Will terminate if root node given doesn't have neighbours
         /// </summary>
         /// <param name="root">The node we're starting our traversal from</param>
         /// <param name="actionOnData">The action we want to run on the data in the graph</param>
-        void DepthFirstTraversal(GraphNode<TNodeDataType> root, Action<TNodeDataType> actionOnData);
+        void DepthFirstTraversal(GraphNode<TNodeDataType> root, Action<GraphNode<TNodeDataType>> actionOnData);
 
         /// <summary>
         /// Retrieves the number of nodes in the graph

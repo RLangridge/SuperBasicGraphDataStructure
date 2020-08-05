@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
 using NUnit.Framework;
 using SuperBasicGraphDataStructure;
 
@@ -143,7 +146,7 @@ namespace SuperBasicGraphDataStructureUnitTests
             _testBasicAdjacencyGraph.AddEdge(node1, node4, 0, 0);
 
             var counter = 0;
-            _testBasicAdjacencyGraph.BreadthFirstTraversal(node1, i => counter += i);
+            _testBasicAdjacencyGraph.BreadthFirstTraversal(node1, i => counter += i.Data);
             Assert.AreEqual(4, counter);
         }
         
@@ -161,7 +164,7 @@ namespace SuperBasicGraphDataStructureUnitTests
             _testBasicAdjacencyGraph.AddEdge(node2, node4, 0, 0);
 
             var counter = 0;
-            _testBasicAdjacencyGraph.BreadthFirstTraversal(node1, i => counter += i);
+            _testBasicAdjacencyGraph.BreadthFirstTraversal(node1, i => counter += i.Data);
             Assert.AreEqual(0, counter);
         }
         
@@ -180,7 +183,7 @@ namespace SuperBasicGraphDataStructureUnitTests
             _testBasicAdjacencyGraph.AddOneDirectionalEdge(node4, node1, 0);
 
             var counter = 0;
-            _testBasicAdjacencyGraph.BreadthFirstTraversal(node1, i => counter += i);
+            _testBasicAdjacencyGraph.BreadthFirstTraversal(node1, i => counter += i.Data);
             Assert.AreEqual(4, counter);
         }
         #endregion
@@ -199,7 +202,7 @@ namespace SuperBasicGraphDataStructureUnitTests
             _testBasicAdjacencyGraph.AddEdge(node1, node4, 0, 0);
 
             var counter = 0;
-            _testBasicAdjacencyGraph.DepthFirstTraversal(node1, i => counter += i);
+            _testBasicAdjacencyGraph.DepthFirstTraversal(node1, i => counter += i.Data);
             Assert.AreEqual(4, counter);
         }
         
@@ -217,7 +220,7 @@ namespace SuperBasicGraphDataStructureUnitTests
             _testBasicAdjacencyGraph.AddEdge(node2, node4, 0, 0);
 
             var counter = 0;
-            _testBasicAdjacencyGraph.DepthFirstTraversal(node1, i => counter += i);
+            _testBasicAdjacencyGraph.DepthFirstTraversal(node1, i => counter += i.Data);
             Assert.AreEqual(0, counter);
         }
         
@@ -236,7 +239,7 @@ namespace SuperBasicGraphDataStructureUnitTests
             _testBasicAdjacencyGraph.AddOneDirectionalEdge(node4, node1, 0);
 
             var counter = 0;
-            _testBasicAdjacencyGraph.DepthFirstTraversal(node1, i => counter += i);
+            _testBasicAdjacencyGraph.DepthFirstTraversal(node1, i => counter += i.Data);
             Assert.AreEqual(4, counter);
         }
         #endregion
@@ -250,19 +253,19 @@ namespace SuperBasicGraphDataStructureUnitTests
             var d = new GraphNode<string>("D");
             var e = new GraphNode<string>("E");
             
-            var _stringGraph = new BasicAdjacencyGraph<string>();
+            var stringGraph = new BasicAdjacencyGraph<string>();
             
-            _stringGraph.AddEdge(a, b, 6, 6);
-            _stringGraph.AddEdge(a, d, 1, 1);
-            _stringGraph.AddEdge(b, d, 2, 2);
-            _stringGraph.AddEdge(b, e, 2, 2);
-            _stringGraph.AddEdge(b, c, 5, 5);
-            _stringGraph.AddEdge(c, e, 5, 5);
-            _stringGraph.AddEdge(d, e, 1, 1);
+            stringGraph.AddEdge(a, b, 6, 6);
+            stringGraph.AddEdge(a, d, 1, 1);
+            stringGraph.AddEdge(b, d, 2, 2);
+            stringGraph.AddEdge(b, e, 2, 2);
+            stringGraph.AddEdge(b, c, 5, 5);
+            stringGraph.AddEdge(c, e, 5, 5);
+            stringGraph.AddEdge(d, e, 1, 1);
             
-            Assert.AreEqual(3, _stringGraph.MinimumCostBetweenTwoNodes(a, b));
-            Assert.AreEqual(1, _stringGraph.MinimumCostBetweenTwoNodes(a, d));
-            Assert.AreEqual(7, _stringGraph.MinimumCostBetweenTwoNodes(a, c));
+            Assert.AreEqual(3, stringGraph.MinimumCostBetweenTwoNodes(a, b));
+            Assert.AreEqual(1, stringGraph.MinimumCostBetweenTwoNodes(a, d));
+            Assert.AreEqual(7, stringGraph.MinimumCostBetweenTwoNodes(a, c));
         }
         
         [Test]
@@ -274,18 +277,158 @@ namespace SuperBasicGraphDataStructureUnitTests
             var d = new GraphNode<string>("D");
             var e = new GraphNode<string>("E");
             
-            var _stringGraph = new BasicAdjacencyGraph<string>();
+            var stringGraph = new BasicAdjacencyGraph<string>();
             
-            _stringGraph.AddEdge(a, b, 6, 6);
-            _stringGraph.AddEdge(a, d, 1, 1);
-            _stringGraph.AddEdge(b, d, 2, 2);
-            _stringGraph.AddEdge(b, e, 2, 2);
-            _stringGraph.AddEdge(b, c, 5, 5);
-            _stringGraph.AddEdge(c, e, 5, 5);
-            _stringGraph.AddEdge(d, e, 1, 1);
+            stringGraph.AddEdge(a, b, 6, 6);
+            stringGraph.AddEdge(a, d, 1, 1);
+            stringGraph.AddEdge(b, d, 2, 2);
+            stringGraph.AddEdge(b, e, 2, 2);
+            stringGraph.AddEdge(b, c, 5, 5);
+            stringGraph.AddEdge(c, e, 5, 5);
+            stringGraph.AddEdge(d, e, 1, 1);
 
-            _stringGraph.MinimumCostBetweenTwoNodes(a, b); // First search which builds the cache around A
-            Assert.AreEqual(1, _stringGraph.MinimumCostBetweenTwoNodes(d, e));
+            stringGraph.MinimumCostBetweenTwoNodes(a, b); // First search which builds the cache around A
+            Assert.AreEqual(1, stringGraph.MinimumCostBetweenTwoNodes(d, e));
+        }
+        
+        [Test]
+        public void BasicAdjacencyGraph_MinimumCostBetweenTwoNodes_NullSource()
+        {
+            var a = new GraphNode<string>("A");
+            var b = new GraphNode<string>("B");
+            var c = new GraphNode<string>("C");
+            var d = new GraphNode<string>("D");
+            var e = new GraphNode<string>("E");
+            
+            var stringGraph = new BasicAdjacencyGraph<string>();
+            
+            stringGraph.AddEdge(a, b, 6, 6);
+            stringGraph.AddEdge(a, d, 1, 1);
+            stringGraph.AddEdge(b, d, 2, 2);
+            stringGraph.AddEdge(b, e, 2, 2);
+            stringGraph.AddEdge(b, c, 5, 5);
+            stringGraph.AddEdge(c, e, 5, 5);
+            stringGraph.AddEdge(d, e, 1, 1);
+            
+            Assert.Throws<ArgumentNullException>(() => stringGraph.MinimumCostBetweenTwoNodes(null, e));
+        }
+        
+        [Test]
+        public void BasicAdjacencyGraph_MinimumCostBetweenTwoNodes_NullDestination()
+        {
+            var a = new GraphNode<string>("A");
+            var b = new GraphNode<string>("B");
+            var c = new GraphNode<string>("C");
+            var d = new GraphNode<string>("D");
+            var e = new GraphNode<string>("E");
+            
+            var stringGraph = new BasicAdjacencyGraph<string>();
+            
+            stringGraph.AddEdge(a, b, 6, 6);
+            stringGraph.AddEdge(a, d, 1, 1);
+            stringGraph.AddEdge(b, d, 2, 2);
+            stringGraph.AddEdge(b, e, 2, 2);
+            stringGraph.AddEdge(b, c, 5, 5);
+            stringGraph.AddEdge(c, e, 5, 5);
+            stringGraph.AddEdge(d, e, 1, 1);
+            
+            Assert.Throws<ArgumentNullException>(() => stringGraph.MinimumCostBetweenTwoNodes(a, null));
+        }
+        
+        [Test]
+        public void BasicAdjacencyGraph_MinimumCostBetweenTwoNodes_SourceNodeHasNoNeighbours()
+        {
+            var a = new GraphNode<string>("A");
+            var b = new GraphNode<string>("B");
+            var c = new GraphNode<string>("C");
+            var d = new GraphNode<string>("D");
+            var e = new GraphNode<string>("E");
+            
+            var stringGraph = new BasicAdjacencyGraph<string>();
+            
+            stringGraph.AddNode(a);
+            stringGraph.AddEdge(b, d, 2, 2);
+            stringGraph.AddEdge(b, e, 2, 2);
+            stringGraph.AddEdge(b, c, 5, 5);
+            stringGraph.AddEdge(c, e, 5, 5);
+            stringGraph.AddEdge(d, e, 1, 1);
+
+            Assert.Throws<ConstraintException>(() => stringGraph.MinimumCostBetweenTwoNodes(a, b));
+        }
+        
+        [Test]
+        public void BasicAdjacencyGraph_MinimumCostBetweenTwoNodes_DestinationNodeNodeHasNoNeighbours()
+        {
+            var a = new GraphNode<string>("A");
+            var b = new GraphNode<string>("B");
+            var c = new GraphNode<string>("C");
+            var d = new GraphNode<string>("D");
+            var e = new GraphNode<string>("E");
+            
+            var stringGraph = new BasicAdjacencyGraph<string>();
+            
+            stringGraph.AddEdge(a, d, 1, 1);
+            stringGraph.AddEdge(c, e, 5, 5);
+            stringGraph.AddEdge(d, e, 1, 1);
+
+            Assert.Throws<ConstraintException>(() => stringGraph.MinimumCostBetweenTwoNodes(a, b));
+        }
+        
+        [Test]
+        public void BasicAdjacencyGraph_MinimumCostBetweenTwoNodes_DisconnectedGraph()
+        {
+            var a = new GraphNode<string>("A");
+            var b = new GraphNode<string>("B");
+            var c = new GraphNode<string>("C");
+            var d = new GraphNode<string>("D");
+            var e = new GraphNode<string>("E");
+            var f = new GraphNode<string>("F");
+            
+            var stringGraph = new BasicAdjacencyGraph<string>();
+            
+            stringGraph.AddEdge(a, b, 6, 6);
+            stringGraph.AddEdge(a, d, 1, 1);
+            stringGraph.AddEdge(b, d, 2, 2);
+            stringGraph.AddEdge(b, e, 2, 2);
+            stringGraph.AddEdge(d, e, 1, 1);
+            stringGraph.AddEdge(c, f, 1, 1);
+            
+            
+            Assert.Throws<ConstraintException>(() => stringGraph.MinimumCostBetweenTwoNodes(a, c));
+        }
+        #endregion
+        #region Get Path Between Two Nodes
+        [Test]
+        public void BasicAdjacencyGraph_GetPathBetweenTwoNodes_Normal()
+        {
+            var a = new GraphNode<string>("A");
+            var b = new GraphNode<string>("B");
+            var c = new GraphNode<string>("C");
+            var d = new GraphNode<string>("D");
+            var e = new GraphNode<string>("E");
+            
+            var stringGraph = new BasicAdjacencyGraph<string>();
+            
+            stringGraph.AddEdge(a, b, 6, 6);
+            stringGraph.AddEdge(a, d, 1, 1);
+            stringGraph.AddEdge(b, d, 2, 2);
+            stringGraph.AddEdge(b, e, 2, 2);
+            stringGraph.AddEdge(b, c, 5, 5);
+            stringGraph.AddEdge(c, e, 5, 5);
+            stringGraph.AddEdge(d, e, 1, 1);
+            
+            List<GraphNode<string>> nodeList = new List<GraphNode<string>>();
+            Assert.DoesNotThrow(() => nodeList = (List<GraphNode<string>>)stringGraph.GetPathBetweenTwoNodes(a, b));
+            Assert.AreEqual(3, nodeList.Count);
+            Assert.AreEqual("A", nodeList.Last().Data);
+            Assert.AreEqual("B", nodeList.First().Data);
+            Assert.AreEqual("D", nodeList[1].Data);
+            
+            Assert.DoesNotThrow(() => nodeList = (List<GraphNode<string>>)stringGraph.GetPathBetweenTwoNodes(a, c));
+            Assert.AreEqual(4, nodeList.Count);
+            var secondPath = new[] {"C", "E", "D", "A"};
+            for(int index = 0; index < nodeList.Count; ++index)
+                Assert.AreEqual(secondPath[index], nodeList[index].Data);
         }
         #endregion
     }
