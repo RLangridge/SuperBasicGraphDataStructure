@@ -431,5 +431,29 @@ namespace SuperBasicGraphDataStructureUnitTests
                 Assert.AreEqual(secondPath[index], nodeList[index].Data);
         }
         #endregion
+        #region Get All Graph Nodes
+
+        [Test]
+        public void BasicAdjacencyGraph_GetAllGraphNodes_Normal()
+        {
+            var a = new GraphNode<string>("A");
+            var b = new GraphNode<string>("B");
+            var c = new GraphNode<string>("C");
+            var d = new GraphNode<string>("D");
+            var e = new GraphNode<string>("E");
+
+            var stringGraph = new BasicAdjacencyGraph<string>();
+
+            stringGraph.AddEdge(a, b, 6, 6);
+            stringGraph.AddEdge(a, d, 1, 1);
+            stringGraph.AddEdge(b, d, 2, 2);
+            stringGraph.AddEdge(b, e, 2, 2);
+            stringGraph.AddEdge(b, c, 5, 5);
+            stringGraph.AddEdge(c, e, 5, 5);
+            stringGraph.AddEdge(d, e, 1, 1);
+            Assert.AreEqual(5, stringGraph.GetAllGraphNodes().Count);
+        }
+
+        #endregion
     }
 }

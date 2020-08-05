@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace SuperBasicGraphDataStructure
@@ -58,6 +59,12 @@ namespace SuperBasicGraphDataStructure
         /// </summary>
         /// <returns>Returns the number of nodes in the graph</returns>
         int GetNumberOfNodesInGraph();
+
+        /// <summary>
+        /// Retrieves all nodes within the graph (doesn't retrieve costs)
+        /// </summary>
+        /// <returns>The nodes within the graph</returns>
+        ICollection<GraphNode<TNodeDataType>> GetAllGraphNodes();
 
         /// <summary>
         /// Get the minimum cost between the source node and the destination node on the graph

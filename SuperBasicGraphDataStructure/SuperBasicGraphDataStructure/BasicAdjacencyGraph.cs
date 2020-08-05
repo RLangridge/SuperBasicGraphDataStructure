@@ -136,6 +136,11 @@ namespace SuperBasicGraphDataStructure
             return _adjacencyList.Count;
         }
 
+        public ICollection<GraphNode<TNodeDataType>> GetAllGraphNodes()
+        {
+            return _adjacencyList.Keys.ToList();
+        }
+
         /// <summary>
         /// Retrieve the minimum cost between two nodes in a graph
         /// </summary>
