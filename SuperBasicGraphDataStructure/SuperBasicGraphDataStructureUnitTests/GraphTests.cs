@@ -453,7 +453,52 @@ namespace SuperBasicGraphDataStructureUnitTests
             stringGraph.AddEdge(d, e, 1, 1);
             Assert.AreEqual(5, stringGraph.GetAllGraphNodes().Count);
         }
+        #endregion
+        #region Find Node
+        [Test]
+        public void BasicAdjacencyGraph_FindNode_Normal()
+        {
+            var a = new GraphNode<string>("A");
+            var b = new GraphNode<string>("B");
+            var c = new GraphNode<string>("C");
+            var d = new GraphNode<string>("D");
+            var e = new GraphNode<string>("E");
 
+            var stringGraph = new BasicAdjacencyGraph<string>();
+
+            stringGraph.AddEdge(a, b, 6, 6);
+            stringGraph.AddEdge(a, d, 1, 1);
+            stringGraph.AddEdge(b, d, 2, 2);
+            stringGraph.AddEdge(b, e, 2, 2);
+            stringGraph.AddEdge(b, c, 5, 5);
+            stringGraph.AddEdge(c, e, 5, 5);
+            stringGraph.AddEdge(d, e, 1, 1);
+            var foundNode = stringGraph.FindNode(x => x == "A");
+            Assert.NotNull(foundNode);
+            Assert.AreEqual(a, foundNode);
+        }
+        
+        [Test]
+        public void BasicAdjacencyGraph_FindNode_ContentNotFound()
+        {
+            var a = new GraphNode<string>("A");
+            var b = new GraphNode<string>("B");
+            var c = new GraphNode<string>("C");
+            var d = new GraphNode<string>("D");
+            var e = new GraphNode<string>("E");
+
+            var stringGraph = new BasicAdjacencyGraph<string>();
+
+            stringGraph.AddEdge(a, b, 6, 6);
+            stringGraph.AddEdge(a, d, 1, 1);
+            stringGraph.AddEdge(b, d, 2, 2);
+            stringGraph.AddEdge(b, e, 2, 2);
+            stringGraph.AddEdge(b, c, 5, 5);
+            stringGraph.AddEdge(c, e, 5, 5);
+            stringGraph.AddEdge(d, e, 1, 1);
+            var foundNode = stringGraph.FindNode(x => x == "Fail");
+            Assert.Null(foundNode);
+        }
         #endregion
     }
 }

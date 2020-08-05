@@ -141,6 +141,11 @@ namespace SuperBasicGraphDataStructure
             return _adjacencyList.Keys.ToList();
         }
 
+        public GraphNode<TNodeDataType> FindNode(Func<TNodeDataType, bool> comparisonFunction)
+        {
+            return _adjacencyList.Keys.ToList().Find(x => comparisonFunction(x.Data));
+        }
+
         /// <summary>
         /// Retrieve the minimum cost between two nodes in a graph
         /// </summary>

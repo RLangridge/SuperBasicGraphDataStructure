@@ -67,6 +67,13 @@ namespace SuperBasicGraphDataStructure
         ICollection<GraphNode<TNodeDataType>> GetAllGraphNodes();
 
         /// <summary>
+        /// Retrieve a node that has data that fulfills a given comparison function
+        /// </summary>
+        /// <param name="comparisonFunction">The comparison function being used to find the node</param>
+        /// <returns>A node if the comparison function returns true, null if the comparison function always returns false during the search</returns>
+        GraphNode<TNodeDataType> FindNode(Func<TNodeDataType, bool> comparisonFunction);
+
+        /// <summary>
         /// Get the minimum cost between the source node and the destination node on the graph
         /// </summary>
         /// <param name="src">The source node we're starting from</param>
